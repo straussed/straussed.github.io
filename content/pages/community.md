@@ -13,7 +13,7 @@ widget = "talk"
 weight = 60
 
 [header]
-image = "community.jpg"
+image = "community_small.jpg"
 caption = ""
 
 +++
