@@ -407,6 +407,8 @@ article {
 
 .article-banner {
   width: 50%;
+  margin-left: auto;
+  margin-right: auto;
   height: auto;
 }
 
