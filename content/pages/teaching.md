@@ -21,8 +21,10 @@ caption = ""
 I believe that the most effective teaching strategy emphasizes hands-on work and experiential learning. For students in the sciences, I favor a focus on student-centered discussions of primary research articles coupled with independent lab and field projects. Primary literature discussions require that students engage with the central products of their field, and thus ensure that they are comfortable and confident in their future interactions with other scientists and their research. Independent projects teach students how to design, conduct, analyze and interpret -- the central skillset of the modern scientist. Despite the focus on research in many STEM fields, most remain fact- and test-oriented and don't adequately prepare students as independent researchers. Finally, we need to emphasize early instruction in computational techniques. These techniques are increasingly found throughout STEM fields, and early familiarization with coding will be invaluable for aspiring scientists. 
 
 #### Courses taught as instructor
-ZOL490: Behavioral Ecology of African Mammals (Study abroad course in Kenya) - 2016 - 2017
+IBIO 490: Behavioral Ecology of African Mammals (Study abroad course in Kenya) - 2016 - 2017
 
 #### Courses taught as graduate teaching assistant
-ZOL445: Evolution - 2016
+IBIO 830 Statistical Methods in Evolution and Ecology - 2018  
+IBIO 341 Fundamental Genetics - 2018  
+IBIO 445: Evolution - 2016  
 

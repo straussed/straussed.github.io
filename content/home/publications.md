@@ -13,10 +13,16 @@ widget = "custom"
 weight = 20
 
 +++
-##### [For a full list of my publications, see my CV](/pages/strauss_cv_2017.pdf)  
+##### [For a full list of my publications, see my CV](/pages/strauss_cv.pdf)
 
-Holekamp, Kay E., **Strauss, Eli D.** (2016) Aggression and dominance: an integrative overview. Current Opinion in Behavioral Ecology.  
+Green DS, Farr M, Holekamp KE, **Strauss ED**, Zipkin E. (in revision) Can hyena behavior predict abundances of sympatric carnivores? Philosophical Transactions of the Royal Society, B.
 
-Smith, Jennifer E., Lehmann, Kenna D.S., Montgomery, Tracy M., **Strauss, Eli D.**, Holekamp, Kay E. (2016) Insights from long-term field studies of mammalian carnivores. Journal of Mammalogy.
+**Strauss ED**, Holekamp KE. (2019) Social alliances improve rank and fitness in convention-based societies. Proceedings of the National Academy of Sciences. https://doi.org/10.1073/pnas.1810384116
 
-Jones, Sarah C., **Strauss, Eli D.**, Holekamp, Kay E. (2015). “Ecology of African Carrion.” _Carrion Ecology, Evolution and Their Applications._  
+**Strauss ED**, Holekamp KE. (2019) Inferring longitudinal hierarchies: Framework and methods for studying the dynamics of dominance. Journal of Animal Ecology. 
+
+Smith JE, Lehmann KDS, Montgomery TM, **Strauss ED**, Holekamp KE. (2017) Insights from long-term field studies of mammalian carnivores. Journal of Mammalogy, 98:631-641. doi:10.1093/jmammal/gyw194.
+
+Holekamp KE, **Strauss ED**. (2016) Aggression and dominance: An interdisciplinary overview. Current Opinion in Behavioral Sciences, 12:44-51. 
+
+Jones SC, **Strauss ED**, Holekamp KE. (2015) Ecology of African Carrion. Pp. 459-489 in _Carrion Ecology, Evolution, and Their Applications_. Benbow ME, Tomberlin JK, Tarone AM (Eds). CRC Press. Boca Raton, FL.
