@@ -115,9 +115,7 @@ a:focus {
 img,
 video {
   height: auto;
-  max-width: 760px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 100%;
   display: block;
 }
 
@@ -408,9 +406,7 @@ article {
 }
 
 .article-banner {
-  width: 760px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 50%;
   height: auto;
 }
 
