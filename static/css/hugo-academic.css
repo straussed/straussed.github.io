@@ -406,7 +406,9 @@ article {
 }
 
 .article-banner {
-  width: 100%;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
   height: auto;
 }
 

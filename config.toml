@@ -19,9 +19,9 @@ defaultContentLanguageInSubdir = false
   hrefTargetBlank = true
 
 [params]
-  name = "Eli Strauss"
-  role = "PhD Candidate"
-  organization = "Michigan State University"
+  name = "Dr. Eli Strauss"
+  role = "Postdoctoral Researcher"
+  organization = "BEACON Center for the Study of Evolution in Action"
   organization_url = ""
   avatar = "me.jpg"
   email = "straussed@gmail.com"
