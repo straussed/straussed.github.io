@@ -1,0 +1,671 @@
+/* ==========================================================
+   Strauss Lab — shared stylesheet
+   MSU brand palette (brand.msu.edu/visual/color-palette):
+     Spartan Green #18453B  text, headers, nav & footer background
+     White         #FFFFFF  page background; text on green surfaces
+     Kelly Green   #008208  links & interactive states on light surfaces
+     Lime Green    #7BBD00  bold accent line & accents on dark green
+     Sage Gray     #8C918D  neutral gray (logo swatch)
+   ========================================================== */
+
+/* Metropolis — self-hosted, SIL Open Font License (see fonts/OFL.txt).
+   This is the typeface used across msu.edu. */
+@font-face {
+  font-family: "Metropolis";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/metropolis-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Metropolis";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/metropolis-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Metropolis";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/metropolis-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Metropolis";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/metropolis-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Metropolis";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../fonts/metropolis-800.woff2") format("woff2");
+}
+
+:root {
+  --spartan: #18453B;       /* Spartan Green — text, headers, nav & footer bg */
+  --bg: #FFFFFF;            /* White — page background */
+  --on-dark: #FFFFFF;      /* White — text/icons on green surfaces */
+  --accent: #008208;       /* Kelly Green — links & interactive on light bg */
+  --accent-bright: #7BBD00; /* Lime Green — bold accent line & accents on dark green */
+  --gray: #8C918D;         /* Sage Gray — neutral, harmonizes with Spartan green */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--spartan);
+  font-family: "Metropolis", "Trebuchet MS", sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/* ---------- Typography ---------- */
+
+h1, h2, h3, h4 {
+  font-family: "Metropolis", "Trebuchet MS", sans-serif;
+  color: var(--spartan);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.9rem; }
+h3 { font-size: 1.4rem; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+/* ---------- Layout ---------- */
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+main {
+  padding: 2.5rem 0 4rem;
+}
+
+section + section {
+  margin-top: 3rem;
+}
+
+/* ---------- Header / nav ---------- */
+
+.site-header {
+  background: var(--spartan);
+}
+
+.nav-inner {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--on-dark);
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.brand:hover,
+.brand:focus {
+  text-decoration: none;
+  color: var(--accent-bright);
+}
+
+/* Logo mark in the nav — white chip keeps the dark Spartan bar
+   readable against the dark green nav background. */
+.logo-mark {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: block;
+  background: #fff;
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 2px solid var(--on-dark);
+  border-radius: 4px;
+  color: var(--on-dark);
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+}
+
+.nav-toggle:hover,
+.nav-toggle:focus {
+  border-color: var(--accent-bright);
+  color: var(--accent-bright);
+}
+
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.4rem;
+}
+
+.site-nav a {
+  color: var(--on-dark);
+  font-size: 1.15rem;
+}
+
+.site-nav a:hover,
+.site-nav a:focus {
+  color: var(--accent-bright);
+  text-decoration: none;
+}
+
+.site-nav a[aria-current="page"] {
+  color: var(--accent-bright);
+  border-bottom: 2px solid var(--accent-bright);
+}
+
+/* Wavy line divider below the nav, set against the green bar.
+   External SVG (images/divider.svg) with palette colors baked in. */
+.accent-line {
+  height: 80px;
+  background-color: var(--spartan);
+  background-image: url("../images/divider.svg");
+  background-repeat: no-repeat;
+  background-position: left;
+  /* Stretch to fit up to 1400px, then stop and left-align so the pattern
+     never looks over-stretched on very wide screens. The SVG's edge
+     fades blend the ends into the green background. */
+  background-size: min(100%, 1400px) 100%;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  background-color: var(--spartan);
+  /* Matching wavy line divider as a band across the top of the footer. */
+  background-image: url("../images/footer_divider.svg");
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: min(100%, 1400px) 80px;
+  color: var(--on-dark);
+  padding: 62px 0 1.5rem; /* < 80px band height, so content rises into the divider's lower transparent area */
+  font-size: 0.95rem;
+}
+
+.footer-grid {
+  display: flex;
+  justify-content: flex-start;
+  gap: 2rem 4rem;
+  flex-wrap: wrap;
+}
+
+.footer-heading {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.footer-address {
+  font-style: normal; /* <address> defaults to italic */
+  line-height: 1.5;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.footer-copyright {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.85rem;
+}
+
+.site-footer a {
+  color: var(--on-dark);
+}
+
+.site-footer a:hover,
+.site-footer a:focus {
+  color: var(--accent-bright);
+}
+
+/* ---------- Placeholders ---------- */
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 2px dashed var(--accent);
+  background: rgba(24, 69, 59, 0.05);
+  color: var(--spartan);
+  font-style: italic;
+  padding: 1rem;
+}
+
+/* 16:9 for hero images / video embeds */
+.placeholder--wide {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+/* Square for headshots */
+.placeholder--square {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+
+.placeholder--logo {
+  width: 120px;
+  height: 120px;
+}
+
+/* Bracketed text placeholders */
+.ph-text {
+  font-style: italic;
+  opacity: 0.75;
+}
+
+/* ---------- Cards / grids ---------- */
+
+.grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid--people {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/* Four research themes: 2x2 at full width rather than 3-across-plus-orphan,
+   which also keeps the card blurbs at a readable line length. */
+.grid--themes {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.card h3 {
+  margin-top: 0.75rem;
+}
+
+/* Theme-card headings link to their theme page but stay green — amber is
+   reserved for the "more" link below the blurb. */
+.card h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card h3 a:hover,
+.card h3 a:focus {
+  color: var(--accent);
+}
+
+.card__more {
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* Question lists on research theme pages — a stack of bare headings reads
+   too shouty in bold, so these sit as a quiet divided list instead. */
+.questions h3 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 0;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(24, 69, 59, 0.15);
+}
+
+.questions h3:first-of-type {
+  padding-top: 0;
+}
+
+.questions h3:last-of-type {
+  border-bottom: none;
+}
+
+/* ---------- People ---------- */
+
+.people-group + .people-group {
+  margin-top: 3rem;
+}
+
+/* Each person is a full-width row: square headshot beside name + blurb,
+   stacked vertically down the page. */
+.person {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.person + .person {
+  margin-top: 2rem;
+}
+
+.person__photo {
+  flex: 0 0 160px;
+  width: 160px; /* overrides .placeholder--square width:100% */
+}
+
+.person__info {
+  flex: 1;
+}
+
+.person__info h3 {
+  margin-top: 0;
+}
+
+/* ---------- News ---------- */
+
+/* A photo feed: two per row, newest first, reading left-to-right then down.
+   The right-hand column is dropped by a fixed offset so the two photos in a
+   row never read as a single side-by-side pair — the higher one is earlier. */
+.news-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
+  align-items: start;
+}
+
+.news-photo {
+  margin: 0; /* <figure> default margin */
+}
+
+/* Kept larger than the row gap so the stagger still reads as a stagger
+   rather than as a slightly ragged row. */
+.news-photo:nth-child(even) {
+  margin-top: 2.5rem;
+}
+
+.news-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.news-photo figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.news-caption-date {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---------- Publications ---------- */
+
+.pub-item {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.pub-item + .pub-item {
+  margin-top: 2.5rem;
+}
+
+.scholar-link {
+  display: inline-block;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  padding: 0.5rem 1.25rem;
+  font-size: 1.2rem;
+}
+
+.scholar-link:hover,
+.scholar-link:focus {
+  background: var(--accent);
+  color: var(--on-dark);
+  text-decoration: none;
+}
+
+/* ---------- Home ---------- */
+
+.home-intro {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.home-intro__brand {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.home-intro__brand h1 {
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+}
+
+/* White MSU wordmark, right side of the footer grid */
+.footer-msu-logo {
+  margin-left: auto;
+  align-self: center;
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+}
+
+.home-blurb {
+  flex: 1 1 320px;
+  margin: 0;
+}
+
+.home-logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  display: block;
+}
+
+.video-embed {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Research section on the home page — the video above it doubles as its hero
+   image, so the heading marks the transition into research content. */
+#research {
+  scroll-margin-top: 1.5rem;
+}
+
+/* Big statement heading beside the lab name in the hero */
+.statement-heading {
+  font-size: 2.6rem;
+  margin-top: 0;
+}
+
+/* ---------- Contact ---------- */
+
+.contact-block {
+  font-style: normal; /* address element default is italic */
+}
+
+/* ---------- Opportunities ---------- */
+
+/* Recruitment-status callout — signature block at the top of the page.
+   Uses the shared palette: kelly-green rule, faint green wash, lime dot. */
+.status-banner {
+  background: rgba(24, 69, 59, 0.05);
+  border: 1px solid rgba(24, 69, 59, 0.15);
+  border-left: 4px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.status-banner__tag {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.status-banner__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  flex: 0 0 auto;
+}
+
+.status-banner p {
+  margin: 0;
+}
+
+.jump-links {
+  margin-top: 0.9rem;
+  font-size: 1rem;
+}
+
+.jump-links a {
+  margin-right: 1.25rem;
+  white-space: nowrap;
+}
+
+/* Advisory asides and deadline metadata within opportunity sections */
+.note {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--gray);
+}
+
+.deadline {
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+/* Intro row — image sits to the left of the opening paragraph */
+.intro-row {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.intro-row__figure {
+  flex: 0 0 400px;
+  width: 400px; /* overrides .placeholder--square width:100% */
+}
+
+.intro-row__body {
+  flex: 1 1 320px;
+}
+
+.intro-row__body p {
+  margin-top: 0;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 700px) {
+  .nav-toggle {
+    display: block;
+    margin-left: auto;
+  }
+
+  .site-nav {
+    display: none;
+    width: 100%;
+  }
+
+  .site-nav.is-open {
+    display: block;
+  }
+
+  .site-nav ul {
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 0 0.75rem;
+  }
+
+  .site-nav li {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .site-nav a {
+    display: block;
+    padding: 0.65rem 0.25rem;
+  }
+
+  .site-nav a[aria-current="page"] {
+    border-bottom: none;
+  }
+
+  .pub-item {
+    grid-template-columns: 1fr;
+  }
+
+  /* One photo per row on mobile — a single column already reads top-to-bottom,
+     so the stagger offset would just be dead space. */
+  .news-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .news-photo:nth-child(even) {
+    margin-top: 0;
+  }
+
+  .person {
+    flex-direction: column;
+  }
+
+  .person__photo {
+    flex-basis: auto;
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .intro-row__figure {
+    flex-basis: auto;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .footer-msu-logo {
+    margin: 0.5rem 0 0; /* full width row on mobile, aligned left with the rest */
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+  .statement-heading { font-size: 2rem; }
+}

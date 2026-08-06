@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" width="1200" height="150" preserveAspectRatio="none">
+  <defs>
+  <mask id="dFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="150"><linearGradient id="g_dFade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1200" y2="0"><stop offset="0" stop-color="#000"/><stop offset="0.02" stop-color="#000"/><stop offset="0.15" stop-color="#fff"/><stop offset="0.85" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient><rect x="0" y="0" width="1200" height="150" fill="url(#g_dFade)"/></mask>
+  <mask id="dOut" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="150"><linearGradient id="g_dOut" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1200" y2="0"><stop offset="0" stop-color="#fff"/><stop offset="0.85" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient><rect x="0" y="0" width="1200" height="150" fill="url(#g_dOut)"/></mask>
+</defs>
+  <path d="M0,20 L470,20 L530,42 L610,42 L670,64 L790,64 L850,86 L900,86 L960,108 L1200,108" mask="url(#dFade)" fill="none" stroke="#8c918d" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M150,42 L330,42 L390,64 L610,64 L670,86 L790,86 L850,108 L900,108 L960,86 L1200,86" mask="url(#dOut)" fill="none" stroke="#8c918d" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M390,42 L470,42 L530,20 L1200,20" mask="url(#dOut)" fill="none" stroke="#8c918d" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M670,42 L790,42 L850,64 L1200,64" mask="url(#dOut)" fill="none" stroke="#8c918d" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M850,42 L1200,42" mask="url(#dOut)" fill="none" stroke="#8c918d" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1030,130 L1200,130" mask="url(#dOut)" fill="none" stroke="#8c918d" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

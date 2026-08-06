@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 150" width="1200" height="150" preserveAspectRatio="none">
+  <defs>
+    <mask id="cFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="150">
+      <linearGradient id="g_cFade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1200" y2="0">
+        <stop offset="0" stop-color="#000"/><stop offset="0.02" stop-color="#000"/><stop offset="0.15" stop-color="#fff"/><stop offset="0.85" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
+      </linearGradient>
+      <rect x="0" y="0" width="1200" height="150" fill="url(#g_cFade)"/>
+    </mask>
+    <mask id="cIn" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="150">
+      <linearGradient id="g_cIn" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1200" y2="0">
+        <stop offset="0" stop-color="#000"/><stop offset="0.02" stop-color="#000"/><stop offset="0.15" stop-color="#fff"/><stop offset="1" stop-color="#fff"/>
+      </linearGradient>
+      <rect x="0" y="0" width="1200" height="150" fill="url(#g_cIn)"/>
+    </mask>
+    <mask id="cOut" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="150">
+      <linearGradient id="g_cOut" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1200" y2="0">
+        <stop offset="0" stop-color="#fff"/><stop offset="0.85" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
+      </linearGradient>
+      <rect x="0" y="0" width="1200" height="150" fill="url(#g_cOut)"/>
+    </mask>
+  </defs>
+  <path d="M0,58 L140,58 L160,75 L280,75 L300,92 L420,92 L440,75 L560,75 L580,92 L860,92 L880,75 L1000,75 L1020,92 L1200,92" mask="url(#cFade)" fill="none" stroke="#8C918D" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M0,75 L140,75 L160,58 L720,58 L740,75 L860,75 L880,92 L980,92" mask="url(#cIn)" fill="none" stroke="#FFFFFF" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M320,75 L420,75 L440,92 L540,92" fill="none" stroke="#8C918D" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M600,75 L720,75 L740,58 L1200,58" mask="url(#cOut)" fill="none" stroke="#8C918D" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1040,75 L1200,75" mask="url(#cOut)" fill="none" stroke="#8C918D" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
