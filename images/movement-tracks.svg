@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 150" width="640" height="150" role="img" aria-label="Two GPS tracks: a meandering underline and a looping path that descends to meet it">
+  <path d="M 28 114 C 80 106 130 123 190 115 C 250 108 300 121 360 113 C 415 107 468 119 520 112 C 552 108 578 111 604 110" fill="none" stroke="#008208" stroke-width="3" stroke-linecap="round" stroke-dasharray="9 8"></path>
+  <path d="M 97 7 C 120 91 168 83 190 92 C 232 100 288 96 278 24 C 278 25 259 1 230 20 C 205 55 205 74 232 82 C 268 96 320 108 383 117 C 427 127 455 119 467 120 C 467 121 578 109 604 108" fill="none" stroke="#7BBD00" stroke-width="3" stroke-linecap="round" stroke-dasharray="9 8"></path>
+  <circle cx="604" cy="110" r="7" fill="#008208"></circle>
+  <circle cx="604" cy="108" r="7" fill="#7BBD00"></circle>
+</svg>
