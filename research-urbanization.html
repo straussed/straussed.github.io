@@ -38,7 +38,16 @@
 
       <section aria-label="Overview">
         <div class="intro-row">
-          <div class="placeholder placeholder--wide intro-row__figure">[PLACEHOLDER: theme image &mdash; 16:9]</div>
+          <picture>
+            <source type="image/webp"
+                    srcset="images/photos/dump-hyenas-960.webp 960w, images/photos/dump-hyenas-1920.webp 1920w"
+                    sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px">
+            <img class="intro-row__figure"
+                 src="images/photos/dump-hyenas-960.jpg"
+                 srcset="images/photos/dump-hyenas-960.jpg 960w, images/photos/dump-hyenas-1920.jpg 1920w"
+                 sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px"
+                 width="960" height="638" decoding="async"
+                 alt="Two spotted hyenas on a dirt track running past a refuse dump on the edge of a city"></picture>
           <div class="intro-row__body">
             <p>Socioecological theory holds that social structure is shaped by the ecological conditions an animal faces, such as resource distribution and habitat structure. The alignment between ecology and social structure can arise through several routes: evolved differences between populations, the plastic expression of behavior within a lifetime, and the self-organized structure that emerges from collectives of individuals and their decisions. Urbanization strains this alignment between social and ecological structure by rapidly altering ecological conditions that are thought to be socially formative, like resource distribution, predation risk, and habitat availability.</p>
             <p>The consequences of this rapid ecological change for animal societies remain poorly understood. Urban and peri-urban environments function as unplanned experiments on the ecological determinants of social structure, allowing us to identify which features of a society track current conditions, which are constrained by evolutionary and social history, and what costs individuals incur when the two diverge. As habitat conversion accelerates worldwide, whether societies can absorb ecological change on this timescale bears directly on which species persist and how they change.</p>

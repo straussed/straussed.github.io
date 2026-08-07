@@ -38,7 +38,17 @@
 
       <section aria-label="Overview">
         <div class="intro-row">
-          <div class="placeholder placeholder--wide intro-row__figure">[PLACEHOLDER: theme image &mdash; 16:9]</div>
+          <picture>
+            <!-- Only the 960w WebP exists for this photo: its dense dry-grass
+                 texture made the 1920w WebP encode larger than the JPEG, so
+                 tools/build-images.sh discarded it. -->
+            <source type="image/webp" srcset="images/photos/social-sniff-960.webp">
+            <img class="intro-row__figure"
+                 src="images/photos/social-sniff-960.jpg"
+                 srcset="images/photos/social-sniff-960.jpg 960w, images/photos/social-sniff-1920.jpg 1920w"
+                 sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px"
+                 width="960" height="640" decoding="async"
+                 alt="A spotted hyena nosing through tall dry grass, tail raised"></picture>
           <div class="intro-row__body">
             <p>In spotted hyenas and in many cercopithecine primates, dominance is passed from mother to offspring through social&mdash;rather than genetic&mdash;inheritance. Offspring acquire positions immediately below their mothers and above their older siblings, creating matrilines that often persist as dynasties across generations. It is perplexing that animals follow such monarchy-like rules of inheritance rather than competing for more advantageous positions in the social hierarchy, as high rank confers better access to food, reproductive success, and consequently, fitness.</p>
             <p>Hierarchy dynamics offer a lens into the processes underlying these social structures. Social and demographic processes both drive substantive change in these systems&mdash;although social alliances predict coups, most change an individual experiences is driven by demographic turnover, causing individuals to decline in rank across their lifespans. In these societies, individual fitness is thus shaped by the dynamic dominance trajectories that arise from social and demographic processes operating at the group scale.</p>

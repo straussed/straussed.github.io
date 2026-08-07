@@ -319,6 +319,21 @@ section + section {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
+/* Research theme photos. All four are 3:2, so honouring their native ratio
+   keeps the grid uniform without cropping anything; object-fit is here to
+   keep it uniform if a future photo comes in at a different ratio. Change
+   aspect-ratio on this one rule to restyle all four cards at once. */
+.card__media {
+  display: block;
+  width: 100%;
+  /* Required: the width/height attributes on the <img> land as presentational
+     hints, so without this the height stays pinned at 640px and aspect-ratio
+     below is ignored (it only sizes the box when height is auto). */
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
 .card h3 {
   margin-top: 0.75rem;
 }
@@ -593,7 +608,14 @@ section + section {
 
 .intro-row__figure {
   flex: 0 0 400px;
-  width: 400px; /* overrides .placeholder--square width:100% */
+  width: 400px;
+  /* Same 3:2 frame as the home-page theme cards. height:auto is load-bearing:
+     without it the img's height attribute pins the box and aspect-ratio is
+     ignored. See .card__media. */
+  display: block;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
 }
 
 .intro-row__body {

@@ -38,7 +38,16 @@
 
       <section aria-label="Overview">
         <div class="intro-row">
-          <div class="placeholder placeholder--wide intro-row__figure">[PLACEHOLDER: theme image &mdash; 16:9]</div>
+          <picture>
+            <source type="image/webp"
+                    srcset="images/photos/lmbo-small-1-960.webp 960w, images/photos/lmbo-small-1-1920.webp 1920w"
+                    sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px">
+            <img class="intro-row__figure"
+                 src="images/photos/lmbo-small-1-960.jpg"
+                 srcset="images/photos/lmbo-small-1-960.jpg 960w, images/photos/lmbo-small-1-1920.jpg 1920w"
+                 sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px"
+                 width="960" height="640" decoding="async"
+                 alt="An adult spotted hyena resting at a den beside two cubs"></picture>
           <div class="intro-row__body">
             <p>Development determines not just how large or fast an animal becomes, but how well it functions in its social world. An underappreciated aspect of development is social competence, or the skills that help animals more optimally navigate social interactions with conspecifics. Social competence shapes the costs and benefits animals experience from group living, but the causes and consequences of variation in social competence remain largely unresolved.</p>
             <p>Societies structured by <a href="research-monarchies.html">social inheritance</a> provide unusual leverage on this problem. Because rank is determined by maternal position rather than individual competitive ability, we can make strong predictions about a juvenile's social behavior knowing only its mother's position: juveniles inherit both their place in the hierarchy and their mother's affiliative connections. Deviations from this expected pattern give a tractable measure of social competence, and they have fitness consequences. Juveniles who underperform their predicted rank suffer reduced survival and lower lifetime reproductive success, independent of the rank they ultimately attain as adults. The hyena system is thus a powerful venue for uncovering the developmental drivers of variation in social competence and its downstream consequences.</p>
