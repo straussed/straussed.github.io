@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Full-resolution photo originals. These are the inputs to
+# tools/build-images.sh, which writes web-ready derivatives into
+# images/photos/ (those *are* committed). Keep the multi-megabyte
+# originals in Dropbox, not in git history.
+images/large_image_originals/
+
+# Build bookkeeping: marks a WebP that was encoded and discarded for losing
+# to its JPEG, so the next run doesn't re-encode it. Local state, not output.
+images/photos/*.no-webp
