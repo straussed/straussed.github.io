@@ -9,4 +9,10 @@ images/large_image_originals/
 
 # Build bookkeeping: marks a WebP that was encoded and discarded for losing
 # to its JPEG, so the next run doesn't re-encode it. Local state, not output.
+# One pattern per output directory in tools/build-images.sh.
 images/photos/*.no-webp
+images/team/*.no-webp
+images/news/*.no-webp
+
+# Python bytecode from tools/*.py
+__pycache__/
