@@ -38,6 +38,7 @@
 
       <section aria-label="Overview">
         <div class="intro-row">
+          <div class="intro-row__media">
           <picture>
             <source type="image/webp"
                     srcset="images/photos/issa-with-collar-960.webp 960w, images/photos/issa-with-collar-1920.webp 1920w"
@@ -48,6 +49,19 @@
                  sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px"
                  width="960" height="640" decoding="async"
                  alt="A spotted hyena walking across wet grass wearing a GPS tracking collar"></picture>
+            <figure class="media-figure">
+              <!-- preload="none" so the 3 MB clip costs nothing until a reader
+                   presses play; the poster carries the figure until then. -->
+              <video controls preload="none" playsinline
+                     poster="images/video/night-jan2-poster.jpg"
+                     width="568" height="320">
+                <source src="images/video/night-jan2-568.mp4" type="video/mp4">
+                <p>Your browser can&rsquo;t play embedded video.
+                   <a href="images/video/night-jan2-568.mp4">Download the clip</a>.</p>
+              </video>
+              <figcaption>Hyenas from one social group move and call.</figcaption>
+            </figure>
+          </div>
           <div class="intro-row__body">
             <p>Spotted hyenas, like humans and a small number of other species, live in fission&ndash;fusion societies in which group members associate in subgroups that change composition throughout the day. This flexibility allows individuals to modulate their social and spatial environment, adjusting the costs and benefits of group living on short timescales. It also imposes a continual demand for decisions: where to travel, with whom to associate, and when and what to signal.</p>
             <p>Social structure accumulates from these decisions, but the heuristics underlying them remain poorly characterized. To deliver a process-based understanding of social influences on animal ecology and evolution, we are decomposing established patterns in social structure (e.g., higher ranked individuals are more gregarious) into the moment-to-moment movement and communication decisions made by the animals in real time. </p>

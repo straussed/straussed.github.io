@@ -118,8 +118,12 @@ section + section {
 }
 
 .nav-inner {
+  /* Share the content column's width and padding so the brand lines up with
+     the page content instead of sitting hard left on wide monitors. */
   width: 100%;
-  padding: 0.75rem 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -204,10 +208,11 @@ section + section {
   background-color: var(--spartan);
   background-image: url("../images/divider.svg");
   background-repeat: no-repeat;
-  background-position: left;
-  /* Stretch to fit up to 1400px, then stop and left-align so the pattern
-     never looks over-stretched on very wide screens. The SVG's edge
-     fades blend the ends into the green background. */
+  /* Stretch to fit up to 1400px, then stop so the pattern never looks
+     over-stretched on very wide screens. Centred, not left-aligned: the
+     content column is centred, and a left-anchored band drifts away from it
+     past ~1400px. The SVG's edge fades blend the ends into the green. */
+  background-position: center;
   background-size: min(100%, 1400px) 100%;
 }
 
@@ -218,7 +223,7 @@ section + section {
   /* Matching wavy line divider as a band across the top of the footer. */
   background-image: url("../images/footer_divider.svg");
   background-repeat: no-repeat;
-  background-position: left top;
+  background-position: center top; /* centred to track the content column — see .accent-line */
   background-size: min(100%, 1400px) 80px;
   color: var(--on-dark);
   padding: 62px 0 1.5rem; /* < 80px band height, so content rises into the divider's lower transparent area */
@@ -323,6 +328,12 @@ section + section {
    keeps the grid uniform without cropping anything; object-fit is here to
    keep it uniform if a future photo comes in at a different ratio. Change
    aspect-ratio on this one rule to restyle all four cards at once. */
+/* The theme photo is a second link to the same page as the card heading.
+   Block so it doesn't pick up inline-level descender space under the image. */
+.card__media-link {
+  display: block;
+}
+
 .card__media {
   display: block;
   width: 100%;
@@ -396,6 +407,19 @@ section + section {
   width: 160px; /* overrides .placeholder--square width:100% */
 }
 
+/* Real headshots come wrapped in <picture>, which carries the class above; the
+   inner <img> has to fill it and drop its height attribute to stay square. */
+.person__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.alumni-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
 .person__info {
   flex: 1;
 }
@@ -452,6 +476,31 @@ section + section {
 
 .pub-list li + li {
   margin-top: 0.9rem;
+}
+
+/* Journal cover sitting beside a related-publications list. Deliberately
+   small — an accent next to the citations, not a figure in its own right. */
+.pub-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.pub-row__body {
+  flex: 1 1 320px;
+}
+
+.pub-cover {
+  flex: 0 0 150px;
+  display: block;
+}
+
+.pub-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .pub-item {
@@ -618,6 +667,42 @@ section + section {
   object-fit: cover;
 }
 
+/* Stacks the theme photo and any supporting figure into the left column.
+   Owns the 400px width when present; .intro-row__figure then fills it. */
+.intro-row__media {
+  flex: 0 0 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.intro-row__media .intro-row__figure {
+  width: 100%;
+}
+
+.media-figure {
+  margin: 0; /* <figure> default margin */
+}
+
+.media-figure img,
+.media-figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Dark backdrop so the poster/first frame of a night clip doesn't sit on
+   white while it loads. */
+.media-figure video {
+  background: #000;
+}
+
+.media-figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
 .intro-row__body {
   flex: 1 1 320px;
 }
@@ -687,6 +772,12 @@ section + section {
   }
 
   .intro-row__figure {
+    flex-basis: auto;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .intro-row__media {
     flex-basis: auto;
     width: 100%;
     max-width: 360px;

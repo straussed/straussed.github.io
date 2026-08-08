@@ -20,6 +20,7 @@ cd "$(dirname "$0")/.."
 
 SRC_DIR="images/large_image_originals"
 OUT_DIR="images/photos"
+VIDEO_OUT_DIR="images/video"
 
 WIDTHS=(960 1920)
 JPEG_QUALITY=78
@@ -52,6 +53,26 @@ webp_quality_for() {
   esac
 }
 
+# Per-image width overrides. Journal covers render as small thumbnails, so the
+# default 960/1920 pair would ship ~10x more pixels than are ever displayed.
+widths_for() {
+  case "$1" in
+    pnas-cover)      echo "300 600" ;;
+    hz-cohort-small) echo "400" ;;
+    tamu)            echo "160 320" ;;
+    *)               echo "${WIDTHS[@]}" ;;
+  esac
+}
+
+# Headshots on the people page are square (css/style.css:405), so these get a
+# centre crop to 1:1 before the resize instead of keeping their native aspect.
+square_crop() {
+  case "$1" in
+    tamu) return 0 ;;
+    *)    return 1 ;;
+  esac
+}
+
 # Issa_with_collar.JPG -> issa-with-collar
 slugify() {
   # -E for extended regex: BSD sed (macOS) does not support \+ in basic regex,
@@ -63,11 +84,14 @@ built=0
 skipped=0
 
 shopt -s nullglob nocaseglob
-for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff}; do
+for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff,heic}; do
   base="$(basename "$src")"
   slug="$(slugify "${base%.*}")"
 
-  for width in "${WIDTHS[@]}"; do
+  crop_args=()
+  square_crop "$slug" && crop_args=(-gravity center -crop 1:1 +repage)
+
+  for width in $(widths_for "$slug"); do
     jpg_out="$OUT_DIR/$slug-$width.jpg"
     webp_out="$OUT_DIR/$slug-$width.webp"
 
@@ -85,6 +109,7 @@ for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff}; do
     # '>' means never upscale an original narrower than the target width.
     magick "$src" \
       -auto-orient \
+      "${crop_args[@]}" \
       -resize "${width}x>" \
       -strip \
       -sampling-factor 4:2:0 \
@@ -95,7 +120,7 @@ for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff}; do
     # Encode WebP from a lossless intermediate rather than from the JPEG
     # above, so the two formats don't compound each other's artifacts.
     tmp_png="$(mktemp -t buildimg).png"
-    magick "$src" -auto-orient -resize "${width}x>" -strip "$tmp_png"
+    magick "$src" -auto-orient "${crop_args[@]}" -resize "${width}x>" -strip "$tmp_png"
     cwebp -q "$(webp_quality_for "$slug")" -m 6 -quiet "$tmp_png" -o "$webp_out"
     rm -f "$tmp_png"
 
@@ -114,6 +139,73 @@ for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff}; do
 done
 shopt -u nullglob nocaseglob
 
+# ---- animated GIFs ----
+# These need gif2webp, not the magick+cwebp path above: cwebp reads a single
+# frame, so the still path would silently flatten the animation to frame 0.
+# Lossless beats lossy here — these are plot animations, flat colour and thin
+# lines, where lossy both looks worse and (measured) barely saves anything.
+# Note gif2webp compresses inter-frame deltas, so dropping frames to save
+# bytes backfires: half the frames measured 2670K vs 1428K for all of them.
+shopt -s nullglob nocaseglob
+for src in "$SRC_DIR"/*.gif; do
+  base="$(basename "$src")"
+  slug="$(slugify "${base%.*}")"
+
+  for width in $(widths_for "$slug"); do
+    webp_out="$OUT_DIR/$slug-$width.webp"
+
+    if [[ $FORCE -eq 0 && "$webp_out" -nt "$src" ]]; then
+      skipped=$((skipped + 1))
+      continue
+    fi
+
+    tmp_gif="$(mktemp -t buildimg).gif"
+    magick "$src" -coalesce -resize "${width}x>" -layers optimize "$tmp_gif"
+    gif2webp -m 6 -mt -quiet "$tmp_gif" -o "$webp_out"
+    rm -f "$tmp_gif"
+
+    built=$((built + 1))
+  done
+done
+shopt -u nullglob nocaseglob
+
+# ---- video ----
+# avconvert ships with macOS, so this needs no extra install. Use the QUALITY
+# presets, not the resolution ones: Preset640x480 & friends only change
+# dimensions and leave the bitrate alone, which measured a 1.4% saving on a
+# 1080p source (10292K -> 10147K at one ninth the pixels). PresetMediumQuality
+# took the same file to 3114K. PresetLowQuality reaches 563K but drops to
+# 224x128, which is below the 400px column and illegible for map/data clips.
+# avconvert writes fast-start output by default (moov before mdat).
+#
+# Posters are NOT generated here: with no ffmpeg there is no frame extractor,
+# so images/video/*-poster.jpg is produced by hand and committed.
+# Listed explicitly as "<source file>|<output name>|<preset>" rather than
+# globbed: large_image_originals also holds untrimmed masters we don't ship.
+VIDEOS=(
+  "night_jan2_video_trimmed.mp4|night-jan2-568.mp4|PresetMediumQuality"
+)
+
+if command -v avconvert >/dev/null; then
+  mkdir -p "$VIDEO_OUT_DIR"
+  for entry in "${VIDEOS[@]}"; do
+    IFS='|' read -r vsrc vout vpreset <<< "$entry"
+    src="$SRC_DIR/$vsrc"
+    out="$VIDEO_OUT_DIR/$vout"
+
+    [[ -f "$src" ]] || { echo "  (skipping $vsrc — not in $SRC_DIR)"; continue; }
+
+    if [[ $FORCE -eq 0 && "$out" -nt "$src" ]]; then
+      skipped=$((skipped + 1))
+      continue
+    fi
+
+    avconvert --source "$src" --output "$out" \
+      --preset "$vpreset" --multiPass --replace >/dev/null 2>&1
+    built=$((built + 1))
+  done
+fi
+
 echo
 printf '%-34s %10s %10s %10s\n' FILE DIMENSIONS JPEG WEBP
 for jpg in "$OUT_DIR"/*.jpg; do
@@ -128,6 +220,16 @@ for jpg in "$OUT_DIR"/*.jpg; do
   printf '%-34s %10s %9sK %10s\n' \
     "$(basename "${jpg%.jpg}")" "$dims" \
     "$(( $(stat -f%z "$jpg") / 1024 ))" "$webp_size"
+done
+
+# Animated WebPs have no JPEG counterpart, so the loop above misses them.
+for webp in "$OUT_DIR"/*.webp; do
+  [[ -e "$webp" && ! -e "${webp%.webp}.jpg" ]] || continue
+  printf '%-34s %10s %10s %9sK  (%s frames)\n' \
+    "$(basename "${webp%.webp}")" \
+    "$(magick identify -format '%wx%h' "$webp[0]")" "--" \
+    "$(( $(stat -f%z "$webp") / 1024 ))" \
+    "$(magick identify "$webp" | wc -l | tr -d ' ')"
 done
 
 echo
