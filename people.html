@@ -37,19 +37,21 @@
       <section class="people-group" aria-label="Principal investigator">
         <h2>Principal Investigator</h2>
 
-        <div class="person">
-          <picture class="person__photo">
-            <source type="image/webp"
-                    srcset="images/team/eli-strauss-160.webp 160w, images/team/eli-strauss-320.webp 320w"
-                    sizes="160px">
-            <img src="images/team/eli-strauss-160.jpg"
-                 srcset="images/team/eli-strauss-160.jpg 160w, images/team/eli-strauss-320.jpg 320w"
-                 sizes="160px"
-                 width="160" height="160" loading="lazy" decoding="async"
-                 alt="Eli Strauss">
-          </picture>
-          <div class="person__info">
-            <h3>Eli Strauss</h3>
+        <div class="people-grid">
+          <div class="person">
+            <div class="person__info">
+              <h3>Eli Strauss</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/eli-strauss-320.webp 320w, images/team/eli-strauss-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/eli-strauss-320.jpg"
+                   srcset="images/team/eli-strauss-320.jpg 320w, images/team/eli-strauss-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="Eli Strauss">
+            </picture>
           </div>
         </div>
       </section>
@@ -57,18 +59,50 @@
       <section class="people-group" aria-label="Graduate students">
         <h2>Graduate Students</h2>
 
-        <!-- Copy this .person block for each graduate student -->
-        <div class="person">
-          <div class="placeholder placeholder--square person__photo">[PLACEHOLDER: Jana Woerner headshot &mdash; square]</div>
-          <div class="person__info">
-            <h3>Jana Woerner</h3>
-          </div>
-        </div>
+        <!-- Copy a .person block for each graduate student.
 
-        <div class="person">
-          <div class="placeholder placeholder--square person__photo">[PLACEHOLDER: Anne Ju Laberge headshot &mdash; square]</div>
-          <div class="person__info">
-            <h3>Anne Ju Laberge</h3>
+             Everyone without a headshot yet shares hyena-placeholder-*. To swap
+             in a real photo: put it in images/large_image_originals/, add its
+             slug to is_headshot() in tools/build-images.sh (so it gets cropped
+             square into images/team/ instead of landing in images/photos/), run
+             that script, then point src/srcset here at the new files and put
+             the person's name in alt.
+
+             The placeholder carries alt="" on purpose -- it is the same hyena
+             for eight people, so describing it once per photo would be noise,
+             and naming the person would describe someone who is not pictured.
+             The name in the <h3> above is what a screen reader announces. -->
+        <div class="people-grid">
+          <div class="person">
+            <div class="person__info">
+              <h3>Jana Woerner</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/hyena-placeholder-320.webp 320w, images/team/hyena-placeholder-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/hyena-placeholder-320.jpg"
+                   srcset="images/team/hyena-placeholder-320.jpg 320w, images/team/hyena-placeholder-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="">
+            </picture>
+          </div>
+
+          <div class="person">
+            <div class="person__info">
+              <h3>Anne Ju Laberge</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/hyena-placeholder-320.webp 320w, images/team/hyena-placeholder-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/hyena-placeholder-320.jpg"
+                   srcset="images/team/hyena-placeholder-320.jpg 320w, images/team/hyena-placeholder-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="">
+            </picture>
           </div>
         </div>
       </section>
@@ -76,46 +110,103 @@
       <section class="people-group" aria-label="Undergraduates">
         <h2>Undergraduates</h2>
 
-        <!-- Copy this .person block for each undergraduate -->
-        <div class="person">
-          <div class="placeholder placeholder--square person__photo">[PLACEHOLDER: Rory Mehren headshot &mdash; square]</div>
-          <div class="person__info">
-            <h3>Rory Mehren</h3>
+        <!-- Copy a .person block for each undergraduate; see the note above the
+             graduate students for how to swap the placeholder for a real photo. -->
+        <div class="people-grid">
+          <div class="person">
+            <div class="person__info">
+              <h3>Rory Mehren</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/hyena-placeholder-320.webp 320w, images/team/hyena-placeholder-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/hyena-placeholder-320.jpg"
+                   srcset="images/team/hyena-placeholder-320.jpg 320w, images/team/hyena-placeholder-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="">
+            </picture>
           </div>
-        </div>
 
-        <div class="person">
-          <div class="placeholder placeholder--square person__photo">[PLACEHOLDER: Madison Cole headshot &mdash; square]</div>
-          <div class="person__info">
-            <h3>Madison Cole</h3>
+          <div class="person">
+            <div class="person__info">
+              <h3>Madison Cole</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/hyena-placeholder-320.webp 320w, images/team/hyena-placeholder-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/hyena-placeholder-320.jpg"
+                   srcset="images/team/hyena-placeholder-320.jpg 320w, images/team/hyena-placeholder-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="">
+            </picture>
           </div>
-        </div>
 
-        <div class="person">
-          <div class="placeholder placeholder--square person__photo">[PLACEHOLDER: Nicole Magerkurth headshot &mdash; square]</div>
-          <div class="person__info">
-            <h3>Nicole Magerkurth</h3>
+          <div class="person">
+            <div class="person__info">
+              <h3>Nicole Magerkurth</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/hyena-placeholder-320.webp 320w, images/team/hyena-placeholder-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/hyena-placeholder-320.jpg"
+                   srcset="images/team/hyena-placeholder-320.jpg 320w, images/team/hyena-placeholder-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="">
+            </picture>
           </div>
-        </div>
 
-        <div class="person">
-          <div class="placeholder placeholder--square person__photo">[PLACEHOLDER: Lexy Stapleton headshot &mdash; square]</div>
-          <div class="person__info">
-            <h3>Lexy Stapleton</h3>
+          <div class="person">
+            <div class="person__info">
+              <h3>Lexy Stapleton</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/hyena-placeholder-320.webp 320w, images/team/hyena-placeholder-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/hyena-placeholder-320.jpg"
+                   srcset="images/team/hyena-placeholder-320.jpg 320w, images/team/hyena-placeholder-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="">
+            </picture>
           </div>
-        </div>
 
-        <div class="person">
-          <div class="placeholder placeholder--square person__photo">[PLACEHOLDER: Isa Musters headshot &mdash; square]</div>
-          <div class="person__info">
-            <h3>Isa Musters</h3>
+          <div class="person">
+            <div class="person__info">
+              <h3>Isa Musters</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/hyena-placeholder-320.webp 320w, images/team/hyena-placeholder-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/hyena-placeholder-320.jpg"
+                   srcset="images/team/hyena-placeholder-320.jpg 320w, images/team/hyena-placeholder-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="">
+            </picture>
           </div>
-        </div>
 
-        <div class="person">
-          <div class="placeholder placeholder--square person__photo">[PLACEHOLDER: Sydney Rominger headshot &mdash; square]</div>
-          <div class="person__info">
-            <h3>Sydney Rominger</h3>
+          <div class="person">
+            <div class="person__info">
+              <h3>Sydney Rominger</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/hyena-placeholder-320.webp 320w, images/team/hyena-placeholder-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/hyena-placeholder-320.jpg"
+                   srcset="images/team/hyena-placeholder-320.jpg 320w, images/team/hyena-placeholder-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="">
+            </picture>
           </div>
         </div>
       </section>
@@ -123,19 +214,21 @@
       <section class="people-group" aria-label="Dogs">
         <h2>Dogs</h2>
 
-        <div class="person">
-          <picture class="person__photo">
-            <source type="image/webp"
-                    srcset="images/team/tamu-160.webp 160w, images/team/tamu-320.webp 320w"
-                    sizes="160px">
-            <img src="images/team/tamu-160.jpg"
-                 srcset="images/team/tamu-160.jpg 160w, images/team/tamu-320.jpg 320w"
-                 sizes="160px"
-                 width="160" height="160" loading="lazy" decoding="async"
-                 alt="Tamu, a black and white dog sitting in a grassy field">
-          </picture>
-          <div class="person__info">
-            <h3>Tamu</h3>
+        <div class="people-grid">
+          <div class="person">
+            <div class="person__info">
+              <h3>Tamu</h3>
+            </div>
+            <picture class="person__photo">
+              <source type="image/webp"
+                      srcset="images/team/tamu-320.webp 320w, images/team/tamu-640.webp 640w"
+                      sizes="(max-width: 700px) calc(50vw - 3rem), 290px">
+              <img src="images/team/tamu-320.jpg"
+                   srcset="images/team/tamu-320.jpg 320w, images/team/tamu-640.jpg 640w"
+                   sizes="(max-width: 700px) calc(50vw - 3rem), 290px"
+                   width="320" height="320" loading="lazy" decoding="async"
+                   alt="Tamu, a black and white dog sitting in a grassy field">
+            </picture>
           </div>
         </div>
       </section>

@@ -43,13 +43,24 @@
         </div>
       </section>
 
-      <section aria-label="Featured video">
+      <section aria-label="Featured photo">
         <div class="video-embed">
-          <div class="placeholder placeholder--wide">
-            [PLACEHOLDER: auto-playing YouTube video embed &mdash; 16:9]
-          </div>
+          <figure class="media-figure">
+            <picture>
+              <source type="image/webp"
+                      srcset="images/photos/social-hyenas-janawoerner-960.webp 960w, images/photos/social-hyenas-janawoerner-1440.webp 1440w"
+                      sizes="min(100vw - 2.5rem, 800px)">
+              <img src="images/photos/social-hyenas-janawoerner-960.jpg"
+                   srcset="images/photos/social-hyenas-janawoerner-960.jpg 960w, images/photos/social-hyenas-janawoerner-1440.jpg 1440w"
+                   sizes="min(100vw - 2.5rem, 800px)"
+                   width="960" height="639" decoding="async"
+                   alt="A dozen or more spotted hyenas spread across open grassland, several feeding at a carcass while others stand nearby and more approach across the plain">
+            </picture>
+            <figcaption>photo by Jana Woerner</figcaption>
+          </figure>
           <!--
-            When the video is ready, replace the placeholder div above with:
+            This photo is a stand-in until the video is ready. To swap it back,
+            replace the <figure> above with:
 
             <div style="position: relative; aspect-ratio: 16 / 9;">
               <iframe
@@ -61,7 +72,9 @@
               </iframe>
             </div>
 
-            Note: browsers require mute=1 for autoplay to work.
+            Note: browsers require mute=1 for autoplay to work. The section's
+            aria-label says "Featured photo" while the photo is up; change it
+            back to "Featured video" at the same time.
           -->
         </div>
       </section>

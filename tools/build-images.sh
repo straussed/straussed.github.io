@@ -47,6 +47,10 @@ mkdir -p "$OUT_DIR" "$TEAM_OUT_DIR" "$NEWS_OUT_DIR"
 jpeg_quality_for() {
   case "$1" in
     social-sniff) echo 70 ;;
+    # Plots are line art, not photographs: thin strokes and small text ring
+    # badly at photo quality, and flat backgrounds compress so well that the
+    # higher setting costs almost nothing.
+    infanticide-mortality-figure) echo 92 ;;
     *)            echo "$JPEG_QUALITY" ;;
   esac
 }
@@ -54,18 +58,19 @@ jpeg_quality_for() {
 webp_quality_for() {
   case "$1" in
     social-sniff) echo 68 ;;
+    infanticide-mortality-figure) echo 90 ;;  # line art; see jpeg_quality_for
     *)            echo "$WEBP_QUALITY" ;;
   esac
 }
 
 # People-page headshots. These differ from the rest on all three axes, so one
-# list drives them: they render in a 160px square column (css/style.css:405),
-# so they get a centre crop to 1:1, only 160/320 widths, and they land in
-# images/team/ rather than images/photos/.
+# list drives them: they render in a square cell of the three-column people
+# grid (css/style.css), so they get a centre crop to 1:1, narrower widths than
+# the rest of the site, and they land in images/team/ rather than images/photos/.
 is_headshot() {
   case "$1" in
-    tamu|eli-strauss) return 0 ;;
-    *)                return 1 ;;
+    tamu|eli-strauss|hyena-placeholder) return 0 ;;
+    *)                                  return 1 ;;
   esac
 }
 
@@ -75,7 +80,14 @@ widths_for() {
   case "$1" in
     pnas-cover)      echo "300 600" ;;
     hz-cohort-small) echo "400" ;;
-    *)               is_headshot "$1" && echo "160 320" || echo "${WIDTHS[@]}" ;;
+    # Only 1440px wide to begin with. -resize '>' would refuse to upscale, so a
+    # file named -1920 would really be 1440 and the srcset would overstate it.
+    social-hyenas-janawoerner) echo "960 1440" ;;
+    # Sits in the 280px image column of .pub-item, so 600 covers 2x.
+    infanticide-mortality-figure) echo "600 1200" ;;
+    # A grid cell is ~290px at the 960px container, so 320 covers 1x and 640
+    # covers retina.
+    *)               is_headshot "$1" && echo "320 640" || echo "${WIDTHS[@]}" ;;
   esac
 }
 

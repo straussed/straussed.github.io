@@ -35,7 +35,23 @@
       <h1>Opportunities</h1>
 
       <div class="intro-row">
-        <div class="placeholder placeholder--wide intro-row__figure">[PLACEHOLDER: lab photo &mdash; 16:9]</div>
+        <!-- .intro-row__media owns the 400px column so the figure and its
+             caption share a width; .intro-row__figure then fills it. -->
+        <div class="intro-row__media">
+          <figure class="media-figure">
+            <picture>
+              <source type="image/webp"
+                      srcset="images/photos/talek-team-960.webp 960w, images/photos/talek-team-1920.webp 1920w"
+                      sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px">
+              <img class="intro-row__figure"
+                   src="images/photos/talek-team-960.jpg"
+                   srcset="images/photos/talek-team-960.jpg 960w, images/photos/talek-team-1920.jpg 1920w"
+                   sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px"
+                   width="960" height="640" decoding="async"
+                   alt="Seven members of the Talek field team standing arm in arm beneath the trees at camp"></picture>
+            <figcaption>Talek camp field team photo, lab photo to come! Photo by Andrew Andrawes</figcaption>
+          </figure>
+        </div>
         <div class="intro-row__body">
           <p>In the Strauss Lab we help each other identify and achieve our goals. We emphasize discovery because people and their goals change over time. We welcome people from all backgrounds because we feel that our team and our work are strengthened when everyone has a seat at the table. If this sounds like a group you'd like to join, see below for opportunities.</p>
         </div>

@@ -390,25 +390,34 @@ section + section {
   margin-top: 3rem;
 }
 
-/* Each person is a full-width row: square headshot beside name + blurb,
-   stacked vertically down the page. */
-.person {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
+/* Three across within each group. Fixed column count rather than auto-fill:
+   the groups have 1-7 people, and auto-fill would give a two-person group two
+   wide columns while a six-person group got three narrow ones, so the headshots
+   would change size from section to section down the page. */
+/* minmax(0, ...) rather than a bare 1fr: a bare 1fr will not shrink a track
+   below its content's min-content width, and the placeholder boxes are wide
+   enough to push the row past the viewport on a phone. */
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem 1.5rem;
 }
 
-.person + .person {
-  margin-top: 2rem;
+/* Name above the photo. The name comes first in the source too, so the reading
+   order a screen reader follows matches what is on screen. */
+.person {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .person__photo {
-  flex: 0 0 160px;
-  width: 160px; /* overrides .placeholder--square width:100% */
+  width: 100%;
 }
 
 /* Real headshots come wrapped in <picture>, which carries the class above; the
-   inner <img> has to fill it and drop its height attribute to stay square. */
+   inner <img> has to fill the column and drop its height attribute so the
+   1:1 crop from build-images.sh sets the height. */
 .person__photo img {
   display: block;
   width: 100%;
@@ -420,12 +429,10 @@ section + section {
   padding-left: 1.25rem;
 }
 
-.person__info {
-  flex: 1;
-}
-
 .person__info h3 {
-  margin-top: 0;
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.3;
 }
 
 /* ---------- News ---------- */
@@ -530,6 +537,22 @@ section + section {
   grid-template-columns: 280px 1fr;
   gap: 1.5rem;
   align-items: start;
+}
+
+/* Without this an <img> keeps its intrinsic width and spills out of the 280px
+   column into the citation text beside it -- the grid track does not clip.
+   Matches .pub-cover img and .news-photo img. The selector reaches through the
+   <picture> and the optional <a> wrapper around it. */
+.pub-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Journal covers are photographed against white, so they need an edge to sit
+   on; the data figures do not. */
+.pub-item .pub-item__cover img {
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .pub-item + .pub-item {
@@ -777,14 +800,12 @@ section + section {
      each photo too small to read. The script drops to a single column at the
      same breakpoint and puts the figures back in source order. */
 
-  .person {
-    flex-direction: column;
-  }
-
-  .person__photo {
-    flex-basis: auto;
-    width: 100%;
-    max-width: 220px;
+  /* Two across rather than one: three would leave the headshots too small to
+     read, but dropping to a single column is what made this page a long scroll
+     in the first place. */
+  .people-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1.25rem;
   }
 
   .intro-row__figure {
