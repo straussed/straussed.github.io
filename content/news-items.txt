@@ -1,0 +1,76 @@
+# News items for news.html — this file is the source of truth for the gallery.
+#
+# TO ADD AN ITEM
+#   1. Put the full-size photo in images/large_image_originals/news/
+#      (any size straight off the camera; it gets resized for you)
+#   2. Add a block below, in any order — the page is sorted by date for you.
+#   3. Run:  ./tools/build-images.sh && ./tools/build-news.py
+#
+# FORMAT
+#   One block per item, blank line between blocks. Three fields:
+#
+#     image:   filename as it sits in images/large_image_originals/news/.
+#              Repeat this line to put several photos under one caption; they
+#              stack at full width and count as a single item on the page.
+#     date:    ISO, either 2026-07-18 or 2026-07 if the day does not matter.
+#              Displayed as "July 2026"; the day is only used for ordering.
+#              Free text like "Summer 2026" will not work — it cannot be sorted.
+#     caption: one sentence, shown after an em dash
+#
+#   The caption is also used as the image's alt text, so it is worth writing one
+#   that says what is in the photo rather than only what the news is — compare
+#   "Our NSF grant was funded" with "The field team celebrating the new NSF
+#   grant at camp", which works as both a caption and a description.
+#
+#   A caption can contain a link, written as [text](https://example.com).
+#   External links open in a new tab. The alt text keeps only the link text, so
+#   a screen reader is not read a URL.
+#
+#   Lines starting with # are ignored. A long value can wrap onto the next line
+#   as long as the continuation is indented. Commas, quotes and & are all fine;
+#   they get escaped for you.
+#
+# EXAMPLE — uncomment and edit, or copy the shape for your own items:
+#
+# image: 2026-07-fieldwork.jpg
+# date: 2026-07-18
+# caption: The team returns to Talek for the summer field season.
+
+
+image: rory_jana_uuraf.heic
+image: madison_uuraf.heic
+image: delaney_uuraf.heic
+date: 2026-04-17
+caption: Rory, Madison, and Delaney present their research at UURAF.
+
+
+image: jana_international_teaching_award.jpg
+date: 2026-05-01
+caption: Jana wins the Homer Higbee International Teaching award. Congrats Jana! 
+
+image: target_giltner.jpg
+date: 2025-09-26
+caption: The lab sets up in temporary space in Giltner Hall.  
+
+image: jana_tracy_asa_eli_abs_2026.jpg
+date: 2026-07-18
+caption: Jana, Tracy, Eli, and Asa all attend and give talks at the Animal Behavior Society meeting (Asa's talk was not on the official schedule)
+
+image: girls_math_and_science_day.jpg
+date: 2026-04-10
+caption: Jana, Madison, and Isa teach kids about hyenas at Girls Math and Science Day.
+
+image: zap_zone.jpg
+date: 2026-04
+caption: The Strauss-Montgomery labs celebrate the end of the academic year at Zap Zone. 
+
+image: jana_movement_art.jpg
+date: 2026-03
+caption: Jana submits hyena movement trajectories for the [MSU EEB Art in Science Prize](https://eeb.msu.edu/initiatives/art-in-science/index.aspx). 
+
+image: cub_car.jpg
+date: 2025-10
+caption: A cub from the Serena South clan wants to get more involved with the research.   
+
+
+ 

@@ -2,8 +2,11 @@
 #
 # Build web-ready photo derivatives.
 #
-#   input:  images/large_image_originals/   (gitignored, full-resolution)
+#   input:  images/large_image_originals/         (gitignored, full-resolution)
+#           images/large_image_originals/news/    (ditto, for news photos)
 #   output: images/photos/                  (committed, served by GitHub Pages)
+#           images/team/                    (ditto, for people-page headshots)
+#           images/news/                    (ditto, for the news gallery)
 #
 # For each original, emits WebP + JPEG at each width in WIDTHS. The site's
 # content column is 960px (css/style.css:101), so 1920 is already 2x retina
@@ -20,6 +23,8 @@ cd "$(dirname "$0")/.."
 
 SRC_DIR="images/large_image_originals"
 OUT_DIR="images/photos"
+TEAM_OUT_DIR="images/team"
+NEWS_OUT_DIR="images/news"
 VIDEO_OUT_DIR="images/video"
 
 WIDTHS=(960 1920)
@@ -34,7 +39,7 @@ for tool in magick cwebp; do
 done
 
 [[ -d "$SRC_DIR" ]] || { echo "error: $SRC_DIR not found" >&2; exit 1; }
-mkdir -p "$OUT_DIR"
+mkdir -p "$OUT_DIR" "$TEAM_OUT_DIR" "$NEWS_OUT_DIR"
 
 # Per-image quality overrides. Photos that are wall-to-wall high-frequency
 # texture (dry grass, foliage) resist compression and need a lower quality to
@@ -53,24 +58,29 @@ webp_quality_for() {
   esac
 }
 
+# People-page headshots. These differ from the rest on all three axes, so one
+# list drives them: they render in a 160px square column (css/style.css:405),
+# so they get a centre crop to 1:1, only 160/320 widths, and they land in
+# images/team/ rather than images/photos/.
+is_headshot() {
+  case "$1" in
+    tamu|eli-strauss) return 0 ;;
+    *)                return 1 ;;
+  esac
+}
+
 # Per-image width overrides. Journal covers render as small thumbnails, so the
 # default 960/1920 pair would ship ~10x more pixels than are ever displayed.
 widths_for() {
   case "$1" in
     pnas-cover)      echo "300 600" ;;
     hz-cohort-small) echo "400" ;;
-    tamu)            echo "160 320" ;;
-    *)               echo "${WIDTHS[@]}" ;;
+    *)               is_headshot "$1" && echo "160 320" || echo "${WIDTHS[@]}" ;;
   esac
 }
 
-# Headshots on the people page are square (css/style.css:405), so these get a
-# centre crop to 1:1 before the resize instead of keeping their native aspect.
-square_crop() {
-  case "$1" in
-    tamu) return 0 ;;
-    *)    return 1 ;;
-  esac
+out_dir_for() {
+  is_headshot "$1" && echo "$TEAM_OUT_DIR" || echo "$OUT_DIR"
 }
 
 # Issa_with_collar.JPG -> issa-with-collar
@@ -84,16 +94,24 @@ built=0
 skipped=0
 
 shopt -s nullglob nocaseglob
-for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff,heic}; do
+# News photos are routed by folder rather than by a per-image list: there will
+# be a lot of them and they all want the default treatment, so the only thing
+# that distinguishes them is where they land.
+for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff,heic} \
+           "$SRC_DIR"/news/*.{jpg,jpeg,png,tif,tiff,heic}; do
   base="$(basename "$src")"
   slug="$(slugify "${base%.*}")"
 
+  # Expanded below as ${crop_args[@]+"${crop_args[@]}"}: macOS ships bash 3.2,
+  # where "${empty_array[@]}" trips `set -u` instead of expanding to nothing.
   crop_args=()
-  square_crop "$slug" && crop_args=(-gravity center -crop 1:1 +repage)
+  is_headshot "$slug" && crop_args=(-gravity center -crop 1:1 +repage)
+  dest="$(out_dir_for "$slug")"
+  [[ "$src" == "$SRC_DIR"/news/* ]] && dest="$NEWS_OUT_DIR"
 
   for width in $(widths_for "$slug"); do
-    jpg_out="$OUT_DIR/$slug-$width.jpg"
-    webp_out="$OUT_DIR/$slug-$width.webp"
+    jpg_out="$dest/$slug-$width.jpg"
+    webp_out="$dest/$slug-$width.webp"
 
     # A .no-webp marker means "we built the WebP last time and threw it away
     # because it lost to the JPEG" -- without it, dropped WebPs look perpetually
@@ -109,7 +127,7 @@ for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff,heic}; do
     # '>' means never upscale an original narrower than the target width.
     magick "$src" \
       -auto-orient \
-      "${crop_args[@]}" \
+      ${crop_args[@]+"${crop_args[@]}"} \
       -resize "${width}x>" \
       -strip \
       -sampling-factor 4:2:0 \
@@ -120,7 +138,7 @@ for src in "$SRC_DIR"/*.{jpg,jpeg,png,tif,tiff,heic}; do
     # Encode WebP from a lossless intermediate rather than from the JPEG
     # above, so the two formats don't compound each other's artifacts.
     tmp_png="$(mktemp -t buildimg).png"
-    magick "$src" -auto-orient "${crop_args[@]}" -resize "${width}x>" -strip "$tmp_png"
+    magick "$src" -auto-orient ${crop_args[@]+"${crop_args[@]}"} -resize "${width}x>" -strip "$tmp_png"
     cwebp -q "$(webp_quality_for "$slug")" -m 6 -quiet "$tmp_png" -o "$webp_out"
     rm -f "$tmp_png"
 
@@ -208,7 +226,7 @@ fi
 
 echo
 printf '%-34s %10s %10s %10s\n' FILE DIMENSIONS JPEG WEBP
-for jpg in "$OUT_DIR"/*.jpg; do
+for jpg in "$OUT_DIR"/*.jpg "$TEAM_OUT_DIR"/*.jpg "$NEWS_OUT_DIR"/*.jpg; do
   [[ -e "$jpg" ]] || continue
   webp="${jpg%.jpg}.webp"
   dims="$(magick identify -format '%wx%h' "$jpg")"
@@ -223,7 +241,7 @@ for jpg in "$OUT_DIR"/*.jpg; do
 done
 
 # Animated WebPs have no JPEG counterpart, so the loop above misses them.
-for webp in "$OUT_DIR"/*.webp; do
+for webp in "$OUT_DIR"/*.webp "$TEAM_OUT_DIR"/*.webp "$NEWS_OUT_DIR"/*.webp; do
   [[ -e "$webp" && ! -e "${webp%.webp}.jpg" ]] || continue
   printf '%-34s %10s %10s %9sK  (%s frames)\n' \
     "$(basename "${webp%.webp}")" \

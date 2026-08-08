@@ -430,30 +430,52 @@ section + section {
 
 /* ---------- News ---------- */
 
-/* A photo feed: two per row, newest first, reading left-to-right then down.
-   The right-hand column is dropped by a fixed offset so the two photos in a
-   row never read as a single side-by-side pair — the higher one is earlier. */
-.news-gallery {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem 1.5rem;
-  align-items: start;
-}
+/* A photo feed in masonry columns, newest first. Photos keep their native
+   aspect ratio and pack against each other, so a tall portrait beside a short
+   landscape leaves no gap.
 
+   The columns are built by js/news-masonry.js, which puts each photo in the
+   shortest column so the newest stays top-left. Deliberately NOT `columns: 2`:
+   that fills one whole column before starting the next, which puts the
+   second-newest photo below the newest and makes the feed look unsorted.
+
+   Unstyled here on purpose — with no JS the figures stack in one column, which
+   is taller but still in the right order. */
 .news-photo {
-  margin: 0; /* <figure> default margin */
+  /* Overrides the <figure> default margin; the bottom margin is the gap
+     between photos stacked in a column. */
+  margin: 0 0 1.75rem;
 }
 
-/* Kept larger than the row gap so the stagger still reads as a stagger
-   rather than as a slightly ragged row. */
-.news-photo:nth-child(even) {
-  margin-top: 2.5rem;
+/* Added by the script once it has built the columns. */
+.news-gallery--columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.news-column {
+  /* min-width lets a column shrink below the intrinsic width of its photos;
+     without it the two columns overflow the container. */
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .news-photo img {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* Several photos under a single caption. They stack at full width with a gap
+   tight enough to read as one group rather than as separate items — the
+   spacing between news items is 1.75rem, so this has to stay well under it. */
+.news-photo--group picture {
+  display: block;
+}
+
+.news-photo--group picture + picture {
+  margin-top: 0.35rem;
 }
 
 .news-photo figcaption {
@@ -751,15 +773,9 @@ section + section {
     grid-template-columns: 1fr;
   }
 
-  /* One photo per row on mobile — a single column already reads top-to-bottom,
-     so the stagger offset would just be dead space. */
-  .news-gallery {
-    grid-template-columns: 1fr;
-  }
-
-  .news-photo:nth-child(even) {
-    margin-top: 0;
-  }
+  /* One photo per row on mobile: two masonry columns at this width would make
+     each photo too small to read. The script drops to a single column at the
+     same breakpoint and puts the figures back in source order. */
 
   .person {
     flex-direction: column;
