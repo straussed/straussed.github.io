@@ -45,38 +45,75 @@
       <section aria-label="Featured publications">
         <h2>Featured Publications</h2>
 
-        <!-- 2-4 featured publications, each with an associated image or video -->
+        <!-- 2-4 featured publications, each with an associated image or video.
+             The image column is 280px wide (.pub-item in css/style.css), so
+             images here are accents rather than readable figures; the data
+             figure below is wrapped in a link to the paper for that reason. -->
 
         <article class="pub-item">
-          <div class="placeholder placeholder--wide">
-            [PLACEHOLDER: publication 1 image or video embed &mdash; 16:9]
-          </div>
+          <picture class="pub-item__cover">
+            <source type="image/webp"
+                    srcset="images/photos/pnas-cover-300.webp 300w, images/photos/pnas-cover-600.webp 600w"
+                    sizes="(max-width: 700px) min(100vw - 2.5rem, 280px), 280px">
+            <img src="images/photos/pnas-cover-300.jpg"
+                 srcset="images/photos/pnas-cover-300.jpg 300w, images/photos/pnas-cover-600.jpg 600w"
+                 sizes="(max-width: 700px) min(100vw - 2.5rem, 280px), 280px"
+                 width="300" height="388" loading="lazy" decoding="async"
+                 alt="The April 30, 2019 cover of PNAS, headlined &ldquo;Hyena alliances and social rank,&rdquo; showing hyenas greeting one another on open grassland">
+          </picture>
           <div>
-            <h3><span class="ph-text">[PLACEHOLDER: publication 1 title]</span></h3>
-            <p class="ph-text">[PLACEHOLDER: publication 1 authors, journal, year, link]</p>
-            <p class="ph-text">[PLACEHOLDER: 1&ndash;2 sentence summary of publication 1]</p>
+            <h3>Social alliances improve rank and fitness in convention-based societies</h3>
+            <p>Strauss, E.D. &amp; Holekamp, K.E. (2019). <em>Proceedings of the National Academy of Sciences</em>, 116(18), 8919&ndash;8924. <a href="https://doi.org/10.1073/pnas.1810384116" target="_blank" rel="noopener">doi.org/10.1073/pnas.1810384116</a></p>
+            <p>In many animal societies, including those of spotted hyenas and numerous primates, dominance rank is determined not by fighting ability but by social convention, with offspring inheriting positions adjacent to their mothers. Such arrangements pose an evolutionary puzzle: if rank determines access to resources and reproduction, why do subordinate individuals acquiesce to an arbitrary position rather than contest it? Drawing on decades of behavioral data spanning multiple generations of wild hyenas, we show that individuals who repeatedly form coalitions with their closest allies tend to rise above their expected rank, that these improvements carry measurable reproductive benefits, and that the resulting differences between adjacent matrilines are amplified across generations by rank inheritance. Cooperation therefore provides a route to social mobility even where hierarchy appears fixed by convention, and the compounding of small advantages over generations offers a general mechanism by which durable inequality emerges in animal and human societies alike.</p>
           </div>
         </article>
 
         <article class="pub-item">
-          <div class="placeholder placeholder--wide">
-            [PLACEHOLDER: publication 2 image or video embed &mdash; 16:9]
-          </div>
+          <!-- Figure 1 of the DomArchive data paper (Strauss et al. 2022,
+               doi.org/10.1098/rstb.2020.0436), which is CC-BY 4.0 and so
+               reusable with credit. Linked to that paper because at 280px the
+               tip labels and legend are too small to read. The source is the
+               PMC copy of the published figure at 698px, so the derivatives
+               stop at 600 rather than the 1200 used for the item below. -->
+          <a href="https://doi.org/10.1098/rstb.2020.0436" target="_blank" rel="noopener">
+            <picture>
+              <source type="image/webp"
+                      srcset="images/photos/domarchive-phylogeny-300.webp 300w, images/photos/domarchive-phylogeny-600.webp 600w"
+                      sizes="(max-width: 700px) min(100vw - 2.5rem, 280px), 280px">
+              <img src="images/photos/domarchive-phylogeny-300.jpg"
+                   srcset="images/photos/domarchive-phylogeny-300.jpg 300w, images/photos/domarchive-phylogeny-600.jpg 600w"
+                   sizes="(max-width: 700px) min(100vw - 2.5rem, 280px), 280px"
+                   width="300" height="370" loading="lazy" decoding="async"
+                   alt="A phylogeny of the taxonomic orders represented in DomArchive, from decapods and hymenopterans through fishes, reptiles and birds to mammals, with dots at each tip scaled to the number of species and datasets and shaded by the proportion of captive versus wild populations. Primates, Passeriformes, Carnivora and Rodentia contribute the most data.">
+            </picture>
+          </a>
           <div>
-            <h3><span class="ph-text">[PLACEHOLDER: publication 2 title]</span></h3>
-            <p class="ph-text">[PLACEHOLDER: publication 2 authors, journal, year, link]</p>
-            <p class="ph-text">[PLACEHOLDER: 1&ndash;2 sentence summary of publication 2]</p>
+            <h3>The centennial of the pecking order: current state and future prospects for the study of dominance hierarchies</h3>
+            <p>Theme issue of <em>Philosophical Transactions of the Royal Society B</em> (2022), 377(1845), compiled and edited by Eli D. Strauss, James P. Curley, Daizaburo Shizuka &amp; Elizabeth A. Hobson. <a href="https://royalsocietypublishing.org/rstb/issue/377/1845" target="_blank" rel="noopener">royalsocietypublishing.org/rstb/issue/377/1845</a></p>
+            <p>A century after Thorleif Schjelderup-Ebbe described the &lsquo;pecking order&rsquo; in chickens, dominance hierarchies remain central to the study of social behavior. This theme issue assembles contributions that take stock of that century of work, with cross-cutting attention to the cognitive underpinnings of dominance, network-analytical approaches to social structure, and the use of experimental rank manipulations to establish causality. <a href="https://doi.org/10.1098/rstb.2020.0432" target="_blank" rel="noopener">The Introduction</a> traces how dominance research helped drive a broader shift in biology&mdash;from an essentialist view of species-typical characteristics toward the modern recognition of rich inter-individual variation in social, behavioral, and physiological phenotypes. <a href="https://doi.org/10.1098/rstb.2020.0436" target="_blank" rel="noopener">An accompanying data paper introduces DomArchive</a>, a compilation of published dominance datasets spanning a century of research across a broad range of animal taxa, distributed as an R package with accompanying metadata. These papers, alongside the other contributions in the special issue, synthesize what we&rsquo;ve learned and what we are still learning about animal social hierarchies.</p>
           </div>
         </article>
 
         <article class="pub-item">
-          <div class="placeholder placeholder--wide">
-            [PLACEHOLDER: publication 3 image or video embed &mdash; 16:9]
-          </div>
+          <!-- Figure 1 of the paper, from the authors' own CC0 data repository
+               at github.com/straussed/infanticide. Linked to the paper because
+               at 280px the axis labels are too small to read. -->
+          <a href="https://doi.org/10.1086/716636" target="_blank" rel="noopener">
+            <picture>
+              <source type="image/webp"
+                      srcset="images/photos/infanticide-mortality-figure-600.webp 600w, images/photos/infanticide-mortality-figure-1200.webp 1200w"
+                      sizes="(max-width: 700px) min(100vw - 2.5rem, 280px), 280px">
+              <img src="images/photos/infanticide-mortality-figure-600.jpg"
+                   srcset="images/photos/infanticide-mortality-figure-600.jpg 600w, images/photos/infanticide-mortality-figure-1200.jpg 1200w"
+                   sizes="(max-width: 700px) min(100vw - 2.5rem, 280px), 280px"
+                   width="600" height="429" loading="lazy" decoding="async"
+                   alt="Two-panel figure. Left: age at death for each source of juvenile mortality, with infanticide concentrated in the first months of life. Right: observed versus inferred death counts, where infanticide and lions are the two largest inferred sources despite few observed cases.">
+            </picture>
+          </a>
           <div>
-            <h3><span class="ph-text">[PLACEHOLDER: publication 3 title]</span></h3>
-            <p class="ph-text">[PLACEHOLDER: publication 3 authors, journal, year, link]</p>
-            <p class="ph-text">[PLACEHOLDER: 1&ndash;2 sentence summary of publication 3]</p>
+            <h3>Infanticide by females is a leading source of juvenile mortality in a large social carnivore</h3>
+            <p>Brown, A.K., Pioon, M.O., Holekamp, K.E. &amp; Strauss, E.D. (2021). <em>The American Naturalist</em>, 198(5), 642&ndash;652. <a href="https://doi.org/10.1086/716636" target="_blank" rel="noopener">doi.org/10.1086/716636</a></p>
+            <p>Group living is generally understood to benefit its participants, which makes the killing of groupmates&rsquo; offspring surprising. Using decades of data from multiple clans of wild spotted hyenas, we estimated the contribution of infanticide to juvenile mortality, described the circumstances under which killings occur, and evaluated competing hypotheses for the evolution of infanticide by females in a social species. Infanticide proved to be one of the leading sources of juvenile mortality in this population, and in every observed case the killer was an adult female from the victim&rsquo;s own clan. Support was strongest for the hypothesis that infanticide reflects competition over social status among matrilines, indicating how competition within groups can rival predation and starvation as a source of mortality.</p>
           </div>
         </article>
 

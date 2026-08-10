@@ -576,22 +576,10 @@ section + section {
 
 /* ---------- Home ---------- */
 
-.home-intro {
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  flex-wrap: wrap;
-}
-
-.home-intro__brand {
-  flex: 0 0 auto;
-  text-align: center;
-}
-
-.home-intro__brand h1 {
-  margin: 0 0 0.75rem;
-  text-transform: uppercase;
-}
+/* The home hero uses the shared .intro-row pattern (see below) rather than
+   classes of its own. It previously led with a large "STRAUSS LAB" wordmark,
+   dropped because it duplicated the site header and took the horizontal space
+   the featured photo needed to sit beside the text. */
 
 /* White MSU wordmark, right side of the footer grid */
 .footer-msu-logo {
@@ -602,11 +590,6 @@ section + section {
   height: auto;
 }
 
-.home-blurb {
-  flex: 1 1 320px;
-  margin: 0;
-}
-
 .home-logo {
   width: 120px;
   height: 120px;
@@ -614,13 +597,8 @@ section + section {
   display: block;
 }
 
-.video-embed {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Research section on the home page — the video above it doubles as its hero
-   image, so the heading marks the transition into research content. */
+/* Research section on the home page — the hero row above it carries the
+   featured photo, so this heading marks the transition into research content. */
 #research {
   scroll-margin-top: 1.5rem;
 }
@@ -725,6 +703,45 @@ section + section {
   width: 100%;
 }
 
+/* Home hero only. The media column bleeds into the page's right margin so it
+   can be much larger than the 400px the research pages use, while the text
+   column keeps its place in the content grid and stays aligned with the nav
+   brand (see .nav-inner). Media runs ~640px at a 1440 window and ~500px at
+   1200, against 400px without the bleed.
+   Two details worth keeping:
+     min(0px, ...) so this never becomes a *positive* margin below 960px, where
+     there is no margin left to bleed into.
+     The 2rem gutter is deliberately wider than .container's 1.25rem padding:
+     100vw counts the vertical scrollbar on browsers that reserve space for one,
+     and the extra absorbs that rather than causing a horizontal scrollbar. */
+.intro-row--bleed {
+  margin-right: min(0px, calc(50% - 50vw + 2rem));
+}
+
+/* Text stops growing so the media takes all the bled width; 800px is the
+   photo's own intrinsic size, past which it would only be upscaled. */
+.intro-row--bleed .intro-row__body {
+  flex: 0 1 488px;
+}
+
+.intro-row--bleed .intro-row__media {
+  flex: 1 1 400px;
+  max-width: 800px;
+}
+
+/* Below the container width there is nothing to bleed into, so fall back to the
+   ordinary two-column row: same 400px media and same wrap behaviour as the
+   research pages. */
+@media (max-width: 960px) {
+  .intro-row--bleed {
+    margin-right: 0;
+  }
+
+  .intro-row--bleed .intro-row__media {
+    max-width: 400px;
+  }
+}
+
 .media-figure {
   margin: 0; /* <figure> default margin */
 }
@@ -815,6 +832,15 @@ section + section {
   }
 
   .intro-row__media {
+    flex-basis: auto;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  /* Repeated for the bleed variant: its own selectors are more specific than
+     the rule above, so without this the home hero would keep the 400px cap
+     here instead of dropping to 360px like every other page. */
+  .intro-row--bleed .intro-row__media {
     flex-basis: auto;
     width: 100%;
     max-width: 360px;

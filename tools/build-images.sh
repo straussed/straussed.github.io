@@ -50,7 +50,7 @@ jpeg_quality_for() {
     # Plots are line art, not photographs: thin strokes and small text ring
     # badly at photo quality, and flat backgrounds compress so well that the
     # higher setting costs almost nothing.
-    infanticide-mortality-figure) echo 92 ;;
+    infanticide-mortality-figure|domarchive-phylogeny) echo 92 ;;
     *)            echo "$JPEG_QUALITY" ;;
   esac
 }
@@ -58,7 +58,7 @@ jpeg_quality_for() {
 webp_quality_for() {
   case "$1" in
     social-sniff) echo 68 ;;
-    infanticide-mortality-figure) echo 90 ;;  # line art; see jpeg_quality_for
+    infanticide-mortality-figure|domarchive-phylogeny) echo 90 ;;  # line art; see jpeg_quality_for
     *)            echo "$WEBP_QUALITY" ;;
   esac
 }
@@ -85,6 +85,9 @@ widths_for() {
     social-hyenas-janawoerner) echo "960 1440" ;;
     # Sits in the 280px image column of .pub-item, so 600 covers 2x.
     infanticide-mortality-figure) echo "600 1200" ;;
+    # Same 280px column, but the only available source (the PMC copy of the
+    # published figure) is 698px wide, so 1200 would not be a real 1200.
+    domarchive-phylogeny) echo "300 600" ;;
     # A grid cell is ~290px at the 960px container, so 320 covers 1x and 640
     # covers retina.
     *)               is_headshot "$1" && echo "320 640" || echo "${WIDTHS[@]}" ;;
