@@ -50,9 +50,18 @@
                  width="960" height="640" decoding="async"
                  alt="An adult spotted hyena resting at a den beside two cubs"></picture>
             <figure class="media-figure">
-              <img src="images/photos/hz-cohort-small-400.webp"
-                   width="400" height="267" loading="lazy" decoding="async"
-                   alt="Animation of a juvenile hyena cohort over development: an aggression network on the left and a rank order on the right, both converging on the hierarchy predicted by maternal rank">
+              <!-- Was an animated WebP; now video, which loops just the same but
+                   at 2x the resolution for a third of the bytes and with a pause
+                   control. aria-label carries what the old <img> alt said. -->
+              <video autoplay muted loop playsinline controls
+                     poster="images/video/hz-cohort-poster.jpg"
+                     width="800" height="534"
+                     aria-label="Animation of a juvenile hyena cohort over development: an aggression network on the left and a rank order on the right, both converging on the hierarchy predicted by maternal rank">
+                <source src="images/video/hz-cohort-800.webm" type="video/webm">
+                <source src="images/video/hz-cohort-800.mp4" type="video/mp4">
+                <p>Your browser can&rsquo;t play embedded video.
+                   <a href="images/video/hz-cohort-800.mp4">Download the animation</a>.</p>
+              </video>
               <figcaption>A cohort of juvenile hyenas learn their ranks&mdash;hyenas are ordered and numbered according to their predicted (maternal) ranks. Across the developmental period, aggressions (left) and ranks (right) align with the predicted hierarchy.</figcaption>
             </figure>
           </div>

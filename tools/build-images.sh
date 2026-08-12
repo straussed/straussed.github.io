@@ -7,12 +7,14 @@
 #   output: images/photos/                  (committed, served by GitHub Pages)
 #           images/team/                    (ditto, for people-page headshots)
 #           images/news/                    (ditto, for the news gallery)
+#           images/video/                   (ditto, for the research-page clips)
 #
 # For each original, emits WebP + JPEG at each width in WIDTHS. The site's
 # content column is 960px (css/style.css:101), so 1920 is already 2x retina
 # and nothing needs to be wider.
 #
-# Requires: ImageMagick (magick), cwebp. On macOS: brew install imagemagick webp
+# Requires: ImageMagick (magick), cwebp, and — for the video section only —
+# ffmpeg. On macOS: brew install imagemagick webp ffmpeg
 #
 # Usage: ./tools/build-images.sh          # skip derivatives that are up to date
 #        ./tools/build-images.sh --force  # rebuild everything
@@ -79,7 +81,6 @@ is_headshot() {
 widths_for() {
   case "$1" in
     pnas-cover)      echo "300 600" ;;
-    hz-cohort-small) echo "400" ;;
     # Only 1440px wide to begin with. -resize '>' would refuse to upscale, so a
     # file named -1920 would really be 1440 and the srcset would overstate it.
     social-hyenas-janawoerner) echo "960 1440" ;;
@@ -184,6 +185,11 @@ for src in "$SRC_DIR"/*.gif; do
   base="$(basename "$src")"
   slug="$(slugify "${base%.*}")"
 
+  # hz_cohort_small.gif is superseded by the hz.mp4 encodes in the video section
+  # below — same animation, 2x the resolution, a third of the bytes. Skipped
+  # rather than deleted because the GIF is still the only copy of some renders.
+  [[ "$slug" == "hz-cohort-small" ]] && continue
+
   for width in $(widths_for "$slug"); do
     webp_out="$OUT_DIR/$slug-$width.webp"
 
@@ -203,40 +209,87 @@ done
 shopt -u nullglob nocaseglob
 
 # ---- video ----
-# avconvert ships with macOS, so this needs no extra install. Use the QUALITY
-# presets, not the resolution ones: Preset640x480 & friends only change
-# dimensions and leave the bitrate alone, which measured a 1.4% saving on a
-# 1080p source (10292K -> 10147K at one ninth the pixels). PresetMediumQuality
-# took the same file to 3114K. PresetLowQuality reaches 563K but drops to
-# 224x128, which is below the 400px column and illegible for map/data clips.
-# avconvert writes fast-start output by default (moov before mdat).
+# Both clips are embedded as autoplaying, looping, muted <video> (the motion is
+# the point, and neither master carries an audio track), so every visitor
+# downloads them: size matters as much as it does for the photos.
 #
-# Posters are NOT generated here: with no ffmpeg there is no frame extractor,
-# so images/video/*-poster.jpg is produced by hand and committed.
-# Listed explicitly as "<source file>|<output name>|<preset>" rather than
-# globbed: large_image_originals also holds untrimmed masters we don't ship.
+# This used to shell out to macOS's avconvert, whose QUALITY presets are the
+# only ones that actually move the bitrate but expose no other knob — no target
+# width, no CRF, no still extraction. ffmpeg gives all three, so the clips are
+# now encoded at a real 2x for their 400px column (800px wide) and the posters
+# are generated here rather than cut by hand and committed.
+#
+# Two encodes per clip. VP9 is listed first in the page's <source> list and wins
+# where supported; the H.264 is the fallback that plays everywhere. The CRF
+# scales are NOT comparable between the two codecs — the pairs below were
+# matched by eye on a frame with fine text, not by arithmetic.
+#
+# Listed explicitly as "<source>|<slug>|<width>|<x264 crf>|<vp9 crf>|<x264 extra>"
+# rather than globbed: large_image_originals also holds untrimmed masters we
+# don't ship, and each clip needs its own settings.
+#
+# hz.mp4 is a 4800x3200 render of the same cohort animation as
+# hz_cohort_small.gif. Encoding from it rather than from the GIF skips a
+# 256-colour palette round trip, and -tune animation is x264's mode for exactly
+# this content: flat fills and thin strokes. The night clip is photographic
+# satellite imagery and wants the default tune.
 VIDEOS=(
-  "night_jan2_video_trimmed.mp4|night-jan2-568.mp4|PresetMediumQuality"
+  "night_jan2_video_trimmed.mp4|night-jan2|800|24|36|"
+  "hz.mp4|hz-cohort|800|20|30|-tune animation"
 )
 
-if command -v avconvert >/dev/null; then
+if command -v ffmpeg >/dev/null; then
   mkdir -p "$VIDEO_OUT_DIR"
   for entry in "${VIDEOS[@]}"; do
-    IFS='|' read -r vsrc vout vpreset <<< "$entry"
+    IFS='|' read -r vsrc slug width x264_crf vp9_crf x264_extra <<< "$entry"
     src="$SRC_DIR/$vsrc"
-    out="$VIDEO_OUT_DIR/$vout"
+    mp4_out="$VIDEO_OUT_DIR/$slug-$width.mp4"
+    webm_out="$VIDEO_OUT_DIR/$slug-$width.webm"
+    poster_out="$VIDEO_OUT_DIR/$slug-poster.jpg"
 
     [[ -f "$src" ]] || { echo "  (skipping $vsrc — not in $SRC_DIR)"; continue; }
 
-    if [[ $FORCE -eq 0 && "$out" -nt "$src" ]]; then
+    if [[ $FORCE -eq 0 && "$mp4_out" -nt "$src" && "$webm_out" -nt "$src" \
+          && "$poster_out" -nt "$src" ]]; then
       skipped=$((skipped + 1))
       continue
     fi
 
-    avconvert --source "$src" --output "$out" \
-      --preset "$vpreset" --multiPass --replace >/dev/null 2>&1
+    # -2 rather than -1: yuv420p subsamples chroma 2x, so an odd height fails.
+    scale="scale=$width:-2:flags=lanczos"
+
+    # -an drops audio unconditionally. Neither master has any, and a silent
+    # track would only cost bytes and block autoplay on stricter browsers.
+    # +faststart moves the moov atom ahead of the mdat so playback can begin
+    # before the whole file has arrived.
+    ffmpeg -y -v error -i "$src" -an -vf "$scale" \
+      -c:v libx264 -profile:v high -preset slow -crf "$x264_crf" $x264_extra \
+      -pix_fmt yuv420p -movflags +faststart \
+      "$mp4_out"
+
+    # cpu-used 1 rather than the usual 2: measured 2438K -> 1968K on the night
+    # clip for ~15s more encode time, which is free at build time.
+    ffmpeg -y -v error -i "$src" -an -vf "$scale" \
+      -c:v libvpx-vp9 -crf "$vp9_crf" -b:v 0 -row-mt 1 -deadline good -cpu-used 1 \
+      -pix_fmt yuv420p \
+      "$webm_out"
+
+    # VP9 normally wins, but not always. Keeping a WebM that lost would be
+    # actively harmful for the same reason as a WebP that loses to its JPEG:
+    # the <source> order means supporting browsers always take it.
+    if [[ "$(stat -f%z "$webm_out")" -ge "$(stat -f%z "$mp4_out")" ]]; then
+      rm -f "$webm_out"
+      echo "  (dropped $slug-$width.webm — larger than the mp4)"
+    fi
+
+    # Not frame 0: these clips fade in, so the very first frame is black.
+    ffmpeg -y -v error -ss 0.5 -i "$src" -frames:v 1 -vf "$scale" -q:v 3 \
+      "$poster_out"
+
     built=$((built + 1))
   done
+else
+  echo "  (skipping video — ffmpeg not found; brew install ffmpeg)"
 fi
 
 echo
@@ -264,6 +317,21 @@ for webp in "$OUT_DIR"/*.webp "$TEAM_OUT_DIR"/*.webp "$NEWS_OUT_DIR"/*.webp; do
     "$(( $(stat -f%z "$webp") / 1024 ))" \
     "$(magick identify "$webp" | wc -l | tr -d ' ')"
 done
+
+# Video lands in its own directory and has no still counterpart, so neither
+# loop above sees it. These are the heaviest things the site ships and they now
+# autoplay, so they are the numbers most worth watching.
+if command -v ffprobe >/dev/null; then
+  for vid in "$VIDEO_OUT_DIR"/*.mp4 "$VIDEO_OUT_DIR"/*.webm; do
+    [[ -e "$vid" ]] || continue
+    printf '%-34s %10s %10s %9sK\n' \
+      "$(basename "$vid")" \
+      "$(ffprobe -v error -select_streams v:0 \
+           -show_entries stream=width,height -of csv=p=0:s=x "$vid")" \
+      "--" \
+      "$(( $(stat -f%z "$vid") / 1024 ))"
+  done
+fi
 
 echo
 echo "built $built, skipped $skipped (up to date)"

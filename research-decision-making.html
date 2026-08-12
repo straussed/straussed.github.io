@@ -49,15 +49,17 @@
                  sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), 400px"
                  width="960" height="640" decoding="async"
                  alt="A spotted hyena walking across wet grass wearing a GPS tracking collar"></picture>
-            <figure class="media-figure">
-              <!-- preload="none" so the 3 MB clip costs nothing until a reader
-                   presses play; the poster carries the figure until then. -->
-              <video controls preload="none" playsinline
+            <figure class="media-figure media-figure--dark">
+              <!-- Autoplays silently on a loop: the master has no audio track,
+                   so muting costs nothing, and the movement is the whole point
+                   of the figure. controls stay on so a reader can pause it. -->
+              <video autoplay muted loop playsinline controls
                      poster="images/video/night-jan2-poster.jpg"
-                     width="568" height="320">
-                <source src="images/video/night-jan2-568.mp4" type="video/mp4">
+                     width="800" height="450">
+                <source src="images/video/night-jan2-800.webm" type="video/webm">
+                <source src="images/video/night-jan2-800.mp4" type="video/mp4">
                 <p>Your browser can&rsquo;t play embedded video.
-                   <a href="images/video/night-jan2-568.mp4">Download the clip</a>.</p>
+                   <a href="images/video/night-jan2-800.mp4">Download the clip</a>.</p>
               </video>
               <figcaption>Hyenas from one social group move and call.</figcaption>
             </figure>

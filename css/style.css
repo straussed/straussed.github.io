@@ -754,8 +754,9 @@ section + section {
 }
 
 /* Dark backdrop so the poster/first frame of a night clip doesn't sit on
-   white while it loads. */
-.media-figure video {
+   white while it loads. Opt-in: the cohort animation is a plot on white, and
+   would flash a black box on the way in. */
+.media-figure--dark video {
   background: #000;
 }
 
