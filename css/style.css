@@ -576,10 +576,112 @@ section + section {
 
 /* ---------- Home ---------- */
 
-/* The home hero uses the shared .intro-row pattern (see below) rather than
-   classes of its own. It previously led with a large "STRAUSS LAB" wordmark,
-   dropped because it duplicated the site header and took the horizontal space
-   the featured photo needed to sit beside the text. */
+/* Full-bleed video banner under the nav divider. It previously led with a
+   photo beside the text (the .intro-row pattern the research pages use), and
+   before that a large "STRAUSS LAB" wordmark, dropped because it duplicated
+   the site header. */
+
+/* The banner butts up against the divider; main's usual top padding moves
+   below the banner instead, so the text keeps its distance from the video. */
+.main--banner {
+  padding-top: 0;
+}
+
+/* 16:9 of the window width while that fits, capped so the text still starts
+   above the fold on a laptop. The 280px floor keeps it a banner rather than a
+   strip on phones, where object-fit crops the sides instead. */
+.hero-banner {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: clamp(280px, 56.25vw, min(72vh, 680px));
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+  background: #2b2116; /* dusk brown, so the box isn't white while the poster loads */
+}
+
+/* object-position 62%: the horizon sits a little below centre in every shot
+   and the hyenas just under it, so a wide crop keeps them and loses sky. */
+.hero-banner__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 62%;
+}
+
+/* Darkens only the bottom third, behind the heading. The frame there is
+   grass in shadow already; this just evens out the brighter sunlit shots. */
+.hero-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 45%);
+  pointer-events: none;
+}
+
+/* .container keeps the heading on the same left edge as the nav brand and
+   the text below. */
+.hero-banner__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-bottom: 1.5rem;
+}
+
+/* Deliberately small: anyone who'd rather not watch can scroll past, so this
+   only needs to exist, not compete with the video. Top-right rather than
+   beside the heading (bottom-right on phones, where the heading moves up).
+   The icon is drawn in
+   CSS (two bars, or a triangle once .is-paused) and the accessible name comes
+   from aria-label, set by js/hero-video.js. */
+.hero-banner__toggle {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.3);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.hero-banner__toggle::before {
+  content: "";
+  width: 8px;
+  height: 10px;
+  border-left: 3px solid var(--on-dark);
+  border-right: 3px solid var(--on-dark);
+}
+
+/* Play triangle, nudged right so it looks centred in the circle. */
+.hero-banner__toggle.is-paused::before {
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid var(--on-dark);
+  border-right: 0;
+}
+
+.hero-banner__toggle:hover,
+.hero-banner__toggle:focus-visible {
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 1;
+}
+
+.hero-banner__toggle:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 2px;
+}
 
 /* White MSU wordmark, right side of the footer grid */
 .footer-msu-logo {
@@ -597,16 +699,19 @@ section + section {
   display: block;
 }
 
-/* Research section on the home page — the hero row above it carries the
-   featured photo, so this heading marks the transition into research content. */
+/* Research section on the home page — the banner above it carries the
+   featured video, so this heading marks the transition into research content. */
 #research {
   scroll-margin-top: 1.5rem;
 }
 
-/* Big statement heading beside the lab name in the hero */
+/* Big statement heading, white over the bottom of the banner video.
+   Scales with the window, so it needs no mobile override. */
 .statement-heading {
-  font-size: 2.6rem;
-  margin-top: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  color: var(--on-dark);
+  margin: 0;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
 }
 
 /* ---------- Contact ---------- */
@@ -701,45 +806,6 @@ section + section {
 
 .intro-row__media .intro-row__figure {
   width: 100%;
-}
-
-/* Home hero only. The media column bleeds into the page's right margin so it
-   can be much larger than the 400px the research pages use, while the text
-   column keeps its place in the content grid and stays aligned with the nav
-   brand (see .nav-inner). Media runs ~640px at a 1440 window and ~500px at
-   1200, against 400px without the bleed.
-   Two details worth keeping:
-     min(0px, ...) so this never becomes a *positive* margin below 960px, where
-     there is no margin left to bleed into.
-     The 2rem gutter is deliberately wider than .container's 1.25rem padding:
-     100vw counts the vertical scrollbar on browsers that reserve space for one,
-     and the extra absorbs that rather than causing a horizontal scrollbar. */
-.intro-row--bleed {
-  margin-right: min(0px, calc(50% - 50vw + 2rem));
-}
-
-/* Text stops growing so the media takes all the bled width; 800px is the
-   photo's own intrinsic size, past which it would only be upscaled. */
-.intro-row--bleed .intro-row__body {
-  flex: 0 1 488px;
-}
-
-.intro-row--bleed .intro-row__media {
-  flex: 1 1 400px;
-  max-width: 800px;
-}
-
-/* Below the container width there is nothing to bleed into, so fall back to the
-   ordinary two-column row: same 400px media and same wrap behaviour as the
-   research pages. */
-@media (max-width: 960px) {
-  .intro-row--bleed {
-    margin-right: 0;
-  }
-
-  .intro-row--bleed .intro-row__media {
-    max-width: 400px;
-  }
 }
 
 .media-figure {
@@ -838,20 +904,38 @@ section + section {
     max-width: 360px;
   }
 
-  /* Repeated for the bleed variant: its own selectors are more specific than
-     the rule above, so without this the home hero would keep the 400px cap
-     here instead of dropping to 360px like every other page. */
-  .intro-row--bleed .intro-row__media {
-    flex-basis: auto;
-    width: 100%;
-    max-width: 360px;
-  }
-
   .footer-msu-logo {
     margin: 0.5rem 0 0; /* full width row on mobile, aligned left with the rest */
   }
 
   h1 { font-size: 2rem; }
   h2 { font-size: 1.6rem; }
-  .statement-heading { font-size: 2rem; }
+
+  /* On a phone the crop is narrow enough that the hyenas fill the bottom of
+     the banner, so the heading moves up into the sky, in the site's usual
+     Spartan green rather than white, and the bottom scrim goes since
+     nothing sits over the grass. */
+  .hero-banner {
+    align-items: flex-start;
+  }
+
+  .hero-banner::after {
+    content: none;
+  }
+
+  .hero-banner__inner {
+    padding-top: 1.25rem;
+    padding-bottom: 0;
+  }
+
+  .statement-heading {
+    color: var(--spartan);
+    text-shadow: none;
+  }
+
+  /* The heading now owns the top edge, so the pause button swaps corners. */
+  .hero-banner__toggle {
+    top: auto;
+    bottom: 0.75rem;
+  }
 }

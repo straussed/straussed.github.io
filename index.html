@@ -29,59 +29,35 @@
   </header>
   <div class="accent-line"></div>
 
-  <main>
+  <main class="main--banner">
+
+    <!-- Full-bleed banner. The page heading sits over the bottom of the video,
+         where the frame is dark grass in every shot, so it reads without a
+         heavy scrim. The video is decorative (aria-hidden): the heading and
+         the text below carry the content.
+         No native controls -- a player bar across a banner looks broken -- so
+         js/hero-video.js runs a small pause/play button, and holds the video
+         paused for visitors who ask for reduced motion. -->
+    <section class="hero-banner" aria-label="Lab introduction">
+      <video class="hero-banner__video" autoplay muted loop playsinline
+             poster="images/video/sunset-stroll-poster.jpg"
+             width="1920" height="1080" aria-hidden="true">
+        <!-- Wide windows get the 1920 encode; everything else, phones
+             included, the 1280. See tools/build-images.sh. -->
+        <source media="(min-width: 1000px)" src="images/video/sunset-stroll-1920.mp4" type="video/mp4">
+        <source src="images/video/sunset-stroll-1280.mp4" type="video/mp4">
+      </video>
+      <div class="hero-banner__inner container">
+        <h1 class="statement-heading">Societies are dynamic</h1>
+      </div>
+      <button class="hero-banner__toggle" type="button" aria-label="Pause video" hidden></button>
+    </section>
+
     <div class="container">
 
-      <!-- Text and media share one row so both are visible without scrolling;
-           stacking them put the photo about 400px below the fold. The text
-           column comes first so the page heading stays early in the document,
-           and on mobile the row wraps to text-then-media. -->
-      <section class="intro-row intro-row--bleed" aria-label="Lab introduction">
-        <div class="intro-row__body">
-          <h1 class="statement-heading">Societies are dynamic</h1>
-          <p>Animal societies are built from the everyday decisions of individuals&mdash;cooperate or compete, leave or stay, respond or ignore. We study social decision-making and the dynamics of social structure to understand how societies work and how they impact the ecology and evolution of the animals that live in them. We seek linkages across timescales from moment-to-moment decisions to the rise and fall of generation-spanning dynasties.</p>
-          <p>Our primary study system is the <a href="https://www.marahyenas.com/" target="_blank" rel="noopener">Mara Hyena Project</a>, a long-term individual-based study of spotted hyenas in the Maasai Mara National Reserve in Kenya. Our work unites the traditional observation-based tools of behavioral ecology with cutting-edge biologging technologies and computer simulations to deliver a process-based understanding of causes and consequences of animal social structure.</p>
-        </div>
-        <div class="intro-row__media">
-          <figure class="media-figure">
-            <picture>
-              <source type="image/webp"
-                      srcset="images/photos/social-hyenas-janawoerner-960.webp 960w, images/photos/social-hyenas-janawoerner-1440.webp 1440w"
-                      sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), (max-width: 960px) 400px, min(50vw - 92px, 800px)">
-              <img src="images/photos/social-hyenas-janawoerner-960.jpg"
-                   srcset="images/photos/social-hyenas-janawoerner-960.jpg 960w, images/photos/social-hyenas-janawoerner-1440.jpg 1440w"
-                   sizes="(max-width: 700px) min(100vw - 2.5rem, 360px), (max-width: 960px) 400px, min(50vw - 92px, 800px)"
-                   width="960" height="639" decoding="async"
-                   alt="A dozen or more spotted hyenas spread across open grassland, several feeding at a carcass while others stand nearby and more approach across the plain">
-            </picture>
-            <figcaption>photo by Jana Woerner</figcaption>
-          </figure>
-          <!--
-            This photo is a stand-in until the video is ready. To swap it back,
-            replace the <figure> above with:
-
-            <div style="position: relative; aspect-ratio: 16 / 9;">
-              <iframe
-                src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1&loop=1&playlist=VIDEO_ID"
-                title="Strauss Lab video"
-                style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"
-                allow="autoplay; encrypted-media"
-                allowfullscreen>
-              </iframe>
-            </div>
-
-            Note: browsers require mute=1 for autoplay to work. Also change this
-            section's aria-label from "Lab introduction" to mention the video if
-            it becomes the main draw.
-
-            Size: this column bleeds into the right margin, so it is not a
-            fixed width -- 400px at a 960px window, 508px at 1200, 628px at
-            1440, capped at 800px (see .intro-row--bleed in css/style.css). A
-            16:9 video therefore lands between 225px and 450px tall, and the
-            text column beside it is 539px, so there is vertical headroom at
-            every size. Nothing needs adjusting for the swap.
-          -->
-        </div>
+      <section class="hero-text" aria-label="About the lab">
+        <p>Animal societies are built from the everyday decisions of individuals&mdash;cooperate or compete, leave or stay, respond or ignore. We study social decision-making and the dynamics of social structure to understand how societies work and how they impact the ecology and evolution of the animals that live in them. We seek linkages across timescales from moment-to-moment decisions to the rise and fall of generation-spanning dynasties.</p>
+        <p>Our primary study system is the <a href="https://www.marahyenas.com/" target="_blank" rel="noopener">Mara Hyena Project</a>, a long-term individual-based study of spotted hyenas in the Maasai Mara National Reserve in Kenya. Our work unites the traditional observation-based tools of behavioral ecology with cutting-edge biologging technologies and computer simulations to deliver a process-based understanding of causes and consequences of animal social structure.</p>
       </section>
 
       <section id="research" aria-label="Research">
@@ -194,5 +170,6 @@
   </footer>
 
   <script src="js/nav.js"></script>
+  <script src="js/hero-video.js"></script>
 </body>
 </html>

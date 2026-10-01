@@ -7,7 +7,7 @@
 #   output: images/photos/                  (committed, served by GitHub Pages)
 #           images/team/                    (ditto, for people-page headshots)
 #           images/news/                    (ditto, for the news gallery)
-#           images/video/                   (ditto, for the research-page clips)
+#           images/video/                   (ditto, for the home hero and research-page clips)
 #
 # For each original, emits WebP + JPEG at each width in WIDTHS. The site's
 # content column is 960px (css/style.css:101), so 1920 is already 2x retina
@@ -209,8 +209,8 @@ done
 shopt -u nullglob nocaseglob
 
 # ---- video ----
-# Both clips are embedded as autoplaying, looping, muted <video> (the motion is
-# the point, and neither master carries an audio track), so every visitor
+# Every clip is embedded as autoplaying, looping, muted <video> (the motion is
+# the point, and no master carries an audio track), so every visitor
 # downloads them: size matters as much as it does for the photos.
 #
 # This used to shell out to macOS's avconvert, whose QUALITY presets are the
@@ -233,9 +233,18 @@ shopt -u nullglob nocaseglob
 # 256-colour palette round trip, and -tune animation is x264's mode for exactly
 # this content: flat fills and thin strokes. The night clip is photographic
 # satellite imagery and wants the default tune.
+#
+# The sunset clip is the full-width home-page banner, encoded twice: the page's
+# <source media> picks 1920 on wide windows and 1280 everywhere else, so phones
+# don't pay for pixels they can't show. 45s of wind-blown grass is about the
+# worst case for a codec (1600 at CRF 24 came to 20MB), hence the high CRFs:
+# 1280/30 is ~3.7MB and 1920/32 ~6.4MB, both clean by eye on the hyenas. Both
+# entries write the same poster; the 1920 one is listed last so its poster wins.
 VIDEOS=(
   "night_jan2_video_trimmed.mp4|night-jan2|800|24|36|"
   "hz.mp4|hz-cohort|800|20|30|-tune animation"
+  "brgr_sunset_stroll_16x9.mp4|sunset-stroll|1280|30|42|"
+  "brgr_sunset_stroll_16x9.mp4|sunset-stroll|1920|32|44|"
 )
 
 if command -v ffmpeg >/dev/null; then
@@ -258,7 +267,7 @@ if command -v ffmpeg >/dev/null; then
     # -2 rather than -1: yuv420p subsamples chroma 2x, so an odd height fails.
     scale="scale=$width:-2:flags=lanczos"
 
-    # -an drops audio unconditionally. Neither master has any, and a silent
+    # -an drops audio unconditionally. No master has any, and a silent
     # track would only cost bytes and block autoplay on stricter browsers.
     # +faststart moves the moov atom ahead of the mdat so playback can begin
     # before the whole file has arrived.
