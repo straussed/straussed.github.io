@@ -226,7 +226,8 @@ shopt -u nullglob nocaseglob
 #
 # Listed explicitly as "<source>|<slug>|<width>|<x264 crf>|<vp9 crf>|<x264 extra>"
 # rather than globbed: large_image_originals also holds untrimmed masters we
-# don't ship, and each clip needs its own settings.
+# don't ship, and each clip needs its own settings. An empty vp9 crf skips the
+# WebM entirely, for clips where VP9 has been measured not to win.
 #
 # hz.mp4 is a 4800x3200 render of the same cohort animation as
 # hz_cohort_small.gif. Encoding from it rather than from the GIF skips a
@@ -235,16 +236,23 @@ shopt -u nullglob nocaseglob
 # satellite imagery and wants the default tune.
 #
 # The sunset clip is the full-width home-page banner, encoded twice: the page's
-# <source media> picks 1920 on wide windows and 1280 everywhere else, so phones
-# don't pay for pixels they can't show. 45s of wind-blown grass is about the
-# worst case for a codec (1600 at CRF 24 came to 20MB), hence the high CRFs:
-# 1280/30 is ~3.7MB and 1920/32 ~6.4MB, both clean by eye on the hyenas. Both
-# entries write the same poster; the 1920 one is listed last so its poster wins.
+# <source media> picks the large one on wide windows and 1280 everywhere else,
+# so phones don't pay for pixels they can't show. 45s of wind-blown grass is
+# about the worst case for a codec, so the phone encode runs a high CRF
+# (1280/30, ~3.7MB). The large one is the master's full 2240 width -- a
+# full-width banner on a 5K monitor wants ~5000px, so it is upscaled whatever
+# we do -- at CRF 29, ~15MB. An earlier 1920/32 (~6.4MB) visibly smeared the
+# grass and fur on a large display; 2240/27 matched the master but was ~22MB.
+# SVT-AV1 was tried too and didn't beat x264 on this clip at any matched size,
+# and VP9 came out larger at 1280 and only ~1% smaller at 2240, so both
+# entries skip the WebM.
+# Both entries write the same poster; the large one is listed last so its
+# poster wins.
 VIDEOS=(
   "night_jan2_video_trimmed.mp4|night-jan2|800|24|36|"
   "hz.mp4|hz-cohort|800|20|30|-tune animation"
-  "brgr_sunset_stroll_16x9.mp4|sunset-stroll|1280|30|42|"
-  "brgr_sunset_stroll_16x9.mp4|sunset-stroll|1920|32|44|"
+  "brgr_sunset_stroll_16x9.mp4|sunset-stroll|1280|30||"
+  "brgr_sunset_stroll_16x9.mp4|sunset-stroll|2240|29||"
 )
 
 if command -v ffmpeg >/dev/null; then
@@ -258,8 +266,8 @@ if command -v ffmpeg >/dev/null; then
 
     [[ -f "$src" ]] || { echo "  (skipping $vsrc — not in $SRC_DIR)"; continue; }
 
-    if [[ $FORCE -eq 0 && "$mp4_out" -nt "$src" && "$webm_out" -nt "$src" \
-          && "$poster_out" -nt "$src" ]]; then
+    if [[ $FORCE -eq 0 && "$mp4_out" -nt "$src" && "$poster_out" -nt "$src" \
+          && ( -z "$vp9_crf" || "$webm_out" -nt "$src" ) ]]; then
       skipped=$((skipped + 1))
       continue
     fi
@@ -276,19 +284,21 @@ if command -v ffmpeg >/dev/null; then
       -pix_fmt yuv420p -movflags +faststart \
       "$mp4_out"
 
-    # cpu-used 1 rather than the usual 2: measured 2438K -> 1968K on the night
-    # clip for ~15s more encode time, which is free at build time.
-    ffmpeg -y -v error -i "$src" -an -vf "$scale" \
-      -c:v libvpx-vp9 -crf "$vp9_crf" -b:v 0 -row-mt 1 -deadline good -cpu-used 1 \
-      -pix_fmt yuv420p \
-      "$webm_out"
+    if [[ -n "$vp9_crf" ]]; then
+      # cpu-used 1 rather than the usual 2: measured 2438K -> 1968K on the night
+      # clip for ~15s more encode time, which is free at build time.
+      ffmpeg -y -v error -i "$src" -an -vf "$scale" \
+        -c:v libvpx-vp9 -crf "$vp9_crf" -b:v 0 -row-mt 1 -deadline good -cpu-used 1 \
+        -pix_fmt yuv420p \
+        "$webm_out"
 
-    # VP9 normally wins, but not always. Keeping a WebM that lost would be
-    # actively harmful for the same reason as a WebP that loses to its JPEG:
-    # the <source> order means supporting browsers always take it.
-    if [[ "$(stat -f%z "$webm_out")" -ge "$(stat -f%z "$mp4_out")" ]]; then
-      rm -f "$webm_out"
-      echo "  (dropped $slug-$width.webm — larger than the mp4)"
+      # VP9 normally wins, but not always. Keeping a WebM that lost would be
+      # actively harmful for the same reason as a WebP that loses to its JPEG:
+      # the <source> order means supporting browsers always take it.
+      if [[ "$(stat -f%z "$webm_out")" -ge "$(stat -f%z "$mp4_out")" ]]; then
+        rm -f "$webm_out"
+        echo "  (dropped $slug-$width.webm — larger than the mp4)"
+      fi
     fi
 
     # Not frame 0: these clips fade in, so the very first frame is black.
