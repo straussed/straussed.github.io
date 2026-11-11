@@ -318,52 +318,67 @@ section + section {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
-/* Four research themes: 2x2 at full width rather than 3-across-plus-orphan,
-   which also keeps the card blurbs at a readable line length. */
-.grid--themes {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+/* Research themes on the home page — full-width rows that alternate the photo
+   between the left and right side down the page. Replaces an earlier 2x2 card
+   grid. */
+.theme-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
 
-/* Research theme photos. All four are 3:2, so honouring their native ratio
-   keeps the grid uniform without cropping anything; object-fit is here to
-   keep it uniform if a future photo comes in at a different ratio. Change
-   aspect-ratio on this one rule to restyle all four cards at once. */
-/* The theme photo is a second link to the same page as the card heading.
-   Block so it doesn't pick up inline-level descender space under the image. */
-.card__media-link {
+.theme-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* Every other row (the 2nd of three) flips: text on the left, photo on the
+   right. Source order stays photo-first so the stacked mobile view below always
+   leads with the image, whichever side the row uses on desktop. */
+.theme-row:nth-child(even) .theme-row__media {
+  order: 2;
+}
+
+/* The photo is a link to the same page as the heading. Block so it doesn't
+   pick up inline-level descender space under the image. */
+.theme-row__media {
   display: block;
 }
 
-.card__media {
+/* All three photos are 3:2, so this honours their native ratio without
+   cropping; object-fit keeps the rows uniform if a future photo arrives at a
+   different ratio. Change aspect-ratio on this one rule to restyle all rows. */
+.theme-row__figure {
   display: block;
   width: 100%;
   /* Required: the width/height attributes on the <img> land as presentational
-     hints, so without this the height stays pinned at 640px and aspect-ratio
-     below is ignored (it only sizes the box when height is auto). */
+     hints, so without this the height stays pinned and aspect-ratio is ignored
+     (it only sizes the box when height is auto). */
   height: auto;
   aspect-ratio: 3 / 2;
   object-fit: cover;
 }
 
-.card h3 {
-  margin-top: 0.75rem;
+.theme-row__body h3 {
+  margin-top: 0;
 }
 
-/* Theme-card headings link to their theme page but stay green — amber is
-   reserved for the "more" link below the blurb. */
-.card h3 a {
+.theme-row__body p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Theme headings link to their theme page but stay green. */
+.theme-row__body h3 a {
   color: inherit;
   text-decoration: none;
 }
 
-.card h3 a:hover,
-.card h3 a:focus {
+.theme-row__body h3 a:hover,
+.theme-row__body h3 a:focus {
   color: var(--accent);
-}
-
-.card__more {
-  font-size: 0.95rem;
-  white-space: nowrap;
 }
 
 /* Question lists on research theme pages — a stack of bare headings reads
@@ -627,7 +642,7 @@ section + section {
   position: relative;
   z-index: 1;
   width: 100%;
-  padding-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
 }
 
 /* Deliberately small: anyone who'd rather not watch can scroll past, so this
@@ -712,6 +727,18 @@ section + section {
   color: var(--on-dark);
   margin: 0;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* Subtitle under the statement heading: smaller and a soft gray rather than
+   pure white, so it sits a step behind the heading. Scales with the window
+   like the heading. */
+.statement-subheading {
+  font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: #D6DAD7;
+  margin: 0.05rem 0 0;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* ---------- Contact ---------- */
@@ -842,6 +869,21 @@ section + section {
 
 /* ---------- Mobile ---------- */
 
+/* Research theme rows stack below ~760px: photo above the text, every row,
+   regardless of which side the photo takes on desktop. The two-column grid is
+   tight enough to warrant stacking a little before the main 700px breakpoint. */
+@media (max-width: 760px) {
+  .theme-row {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Undo the desktop flip so the photo (first in source order) stays on top. */
+  .theme-row:nth-child(even) .theme-row__media {
+    order: 0;
+  }
+}
+
 @media (max-width: 700px) {
   .nav-toggle {
     display: block;
@@ -928,9 +970,18 @@ section + section {
     padding-bottom: 0;
   }
 
-  .statement-heading {
+  .statement-heading,
+  .statement-subheading {
     color: var(--spartan);
     text-shadow: none;
+  }
+
+  /* Grayed-down Spartan, matching the softer subtitle on desktop. Sized to
+     the window so the line fits on one row across phone widths (the text runs
+     ~23x its font size; the column is 100vw minus the 2.5rem gutters). */
+  .statement-subheading {
+    color: #3F5A52;
+    font-size: clamp(0.7rem, calc(4.1vw - 2px), 0.95rem);
   }
 
   /* The heading now owns the top edge, so the pause button swaps corners. */
